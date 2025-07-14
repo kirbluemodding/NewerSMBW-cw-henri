@@ -3,6 +3,11 @@
 # yaml, hasn't it...
 source_files: [../src/randomcrap.S, ../src/music.cpp, ../src/fix38.S, ../src/nullsub.S, ../src/newer.cpp]#, ../src/anmconstruct.S]
 hooks:
+  - name: RestoreE3Textbox
+    type: patch
+    addr_pal: 0x80781CA8
+    data: '38A00000'
+    
   - name: HardCodeSavesForNoReason
     type: patch
     addr_pal: 0x802F148C

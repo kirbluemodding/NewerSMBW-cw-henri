@@ -613,11 +613,9 @@ void dScKoopatlas_c::executeState_CSMenu() {
 					break;
 
 				case 3:
-					// Title Screen
-					MapReport("Title Screen was pressed\n");
-					state.setState(&StateID_TitleConfirmOpenWait);
-					yesNoWindow->visible = true;
-					yesNoWindow->type = 10;
+					// Title Screen (now wii menu)
+					MapReport("Wii Menu was pressed\n");
+					OSReturnToMenu();
 					break;
 			}
 

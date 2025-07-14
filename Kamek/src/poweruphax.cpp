@@ -73,32 +73,9 @@ void dHammerSuitRenderer_c::setup(dPlayerModelHandler_c *handler, int sceneID) {
 	rootNodeID = skl_root.GetID();
 }
 
-void dHammerSuitRenderer_c::draw() {
-	if (victim->powerup_id != 7)
-		return;
-
-	if (victim->player_id_2 <= 1) {
-		// Materials: 2=hair 3=hat; Modes: BACK=visible ALL=invisible
-		SetCullModeForMaterial(&victim->getCurrentModel()->head, 3, GX_CULL_ALL);
-
-		Mtx headMtx;
-		victimModel->getMatrixForNode(headNodeID, &headMtx);
-
-		helmet.setDrawMatrix(&headMtx);
-		helmet.setScale(1.0f, 1.0f, 1.0f);
-		helmet.calcWorld(false);
-
-		helmet.scheduleForDrawing();
-	}
-
-	Mtx rootMtx;
-	victimModel->getMatrixForNode(rootNodeID, &rootMtx);
-
-	shell.setDrawMatrix(&rootMtx);
-	shell.setScale(1.0f, 1.0f, 1.0f);
-	shell.calcWorld(false);
-
-	shell.scheduleForDrawing();
+void dHammerSuitRenderer_c::draw() { // more like the nair function now
+	SetCullModeForMaterial(&victim->getCurrentModel()->head, 3, GX_CULL_ALL);
+	SetCullModeForMaterial(&victim->getCurrentModel()->head, 2, GX_CULL_ALL);
 }
 
 

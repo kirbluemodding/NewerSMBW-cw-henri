@@ -2,7 +2,7 @@
 
 daWMPlayer_c *daWMPlayer_c::instance;
 static const char *mdlNames[] = {"MB_model", "SMB_model", "PLMB_model", "PMB_model"};
-static const char *patNames[] = {"PB_switch_swim", "PB_switch_swim", "PLMB_switch_swim", "PMB_switch_swim"};
+static const char *patNames[] = {"PB_switch_swim", "PB_switch_swim", "PLMB_switch_swim", "PLB_switch_swim"};
 
 int daWMPlayer_c::onCreate() {
 
