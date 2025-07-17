@@ -69,6 +69,7 @@ class dScKoopatlas_c : public dScene_c {
 		DECLARE_STATE(PowerupsWait);
 		DECLARE_STATE(ShopWait);
 		DECLARE_STATE(CoinsWait);
+		DECLARE_STATE(WMViewerWait);
 		DECLARE_STATE(SaveOpen);
 		DECLARE_STATE(SaveSelect);
 		DECLARE_STATE(SaveWindowClose);
@@ -138,6 +139,16 @@ class dScKoopatlas_c : public dScene_c {
 		void showSaveWindow();
 
 		bool keepMusicPlaying;
+		
+		bool WMViewerVisible;
+		struct WMViewerBorder
+		{
+			float xLeft[2], xRight[2], yTop[2], yBottom[2]; //Array -> number of maps
+		};
+		WMViewerBorder WMBorder;
+		bool sfxShouldPlay;
+		bool sfxIsPlaying;
+		nw4r::snd::SoundHandle scrollHandle;
 };
 
 extern void *_8042A788;

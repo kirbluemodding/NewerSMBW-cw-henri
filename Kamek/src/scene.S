@@ -145,8 +145,8 @@ EnvWorld:	.string "Env_world"
 SceneBrres:	.string "scene/scene.brres"
 MainSelect:	.string "MainSelect"
 Zero:		.float 0.0
-BlightW1:	.string "light/W8.blight"
-BlmapW1:	.string "light/W8.blmap"
+BlightW1:	.string "light/W1.blight"
+BlmapW1:	.string "light/W1.blmap"
 
 .align 4
 

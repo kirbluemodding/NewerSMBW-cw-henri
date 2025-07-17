@@ -1,4 +1,5 @@
 #include "koopatlas/shop.h"
+#include <game.h>
 
 CREATE_STATE(dWMShop_c, Hidden);
 CREATE_STATE(dWMShop_c, ShowWait);
@@ -18,6 +19,7 @@ void dWMShop_c::ShopModel_c::setupItem(float x, float y, ItemTypes type) {
 		{ "I_star", 		"g3d/I_star.brres", 			"I_star", 				"wait2" },
 		{ "I_hammer", 		"g3d/I_fireflower.brres",		"I_fireflower",			"wait2" },
 		{ "I_kinoko_bundle","g3d/I_life_kinoko.brres", 		"I_life_kinoko", 		"wait2" },
+		{ "I_kinoko_bundle","g3d/I_rick_kinoko.brres", 		"I_rick_kinoko", 		"wait2" },
 	};
 
 	this->x = x;
@@ -44,7 +46,7 @@ void dWMShop_c::ShopModel_c::setupItem(float x, float y, ItemTypes type) {
 
 void dWMShop_c::ShopModel_c::setupLakitu(int id) {
 	static const char* models[10] = { 
-		"g3d/yoshi.brres", "g3d/desert.brres", "g3d/mountain.brres", "g3d/sakura.brres", "g3d/santa.brres", 
+		"g3d/rick.brres", "g3d/desert.brres", "g3d/mountain.brres", "g3d/sakura.brres", "g3d/santa.brres", 
 		"g3d/ghost.brres", "g3d/space.brres", "g3d/koopa.brres", "g3d/sewer.brres", "g3d/goldwood.brres" 
 	};
 
@@ -425,19 +427,11 @@ void dWMShop_c::endState_HideWait() {
 // Possible 8 coin combos =  1,1,2,3,3  /  1,2,2,3,3  /  1,2,3,3,3  /  2,2,2,3,3  /  2,2,3,3,3  /  1,3,3,3,3  /  2,3,3,3,3  /  3,3,3,3,3
 
 const dWMShop_c::ItemTypes dWMShop_c::Inventory[10][12] = { 
-#if defined(FALLING_LEAF)
-	{
-		MUSHROOM, FIRE_FLOWER, ICE_FLOWER, PROPELLER,
-		FIRE_FLOWER, HAMMER, PROPELLER,
-		PENGUIN, MUSHROOM, MINI_SHROOM, FIRE_FLOWER, PROPELLER
-	},
-#else
-	{ // Yoshi's Island
-		MUSHROOM, FIRE_FLOWER, ICE_FLOWER, PROPELLER,
+	{ // Henri's Island RICK OP SHOP
+		RICK_SHROOM, FIRE_FLOWER, ICE_FLOWER, PROPELLER,
 		FIRE_FLOWER, ICE_FLOWER, FIRE_FLOWER,
 		MUSHROOM, MUSHROOM, ONE_UP, PROPELLER, PROPELLER
 	},
-#endif
 	{ // Desert
 		MUSHROOM, FIRE_FLOWER, ICE_FLOWER, PROPELLER,
 		FIRE_FLOWER, STARMAN, FIRE_FLOWER,
@@ -627,9 +621,18 @@ void dWMShop_c::buyItem(int item) {
 		}
 	}
 
-	if (appliedItems[(int)ONE_UP] > 0)
+	if (appliedItems[(int)ONE_UP] > 0) {
 		MapSoundPlayer(SoundRelatedClass, SE_SYS_100COIN_ONE_UP, 1);
+	}
 
+	if (appliedItems[(int)RICK_SHROOM] > 0) {
+		// rick op shop's evils
+		MapSoundPlayer(SoundRelatedClass, SE_BOSS_CMN_MAGIC_SHOT, 1);
+		GXColor text = {0, 0, 0, 255};
+		GXColor back = {255, 0, 74, 255};
+		OSFatal(&text, &back, "Get scam. Jaja!");
+	}
+	
 	state.setState(&StateID_CoinCountdown);
 	HideSelectCursor(SelectCursorPointer, 0);
 }

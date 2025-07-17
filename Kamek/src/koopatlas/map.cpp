@@ -553,76 +553,7 @@ void dWMMap_c::doEffects() {
 	// Note: effect::spawn() takes name, unk, pos, rot, scale
 	const S16Vec efRot = {0x1800, 0, 0};
 
-#ifdef FALLING_LEAF
-	if (mapID == 0) {
-		// Torches
-		static const VEC3 torchPos[6] = {
-			{5122.0f, -5750.0f, 7000.0f},
-			{4980.0f, -5700.0f, 7000.0f},
-			{5035.0f, -5674.0f, 7000.0f},
-			{5110.0f, -5674.0f, 7000.0f},
-			{4980.0f, -5510.0f, 7000.0f},
-			{5144.0f, -5474.0f, 7000.0f},
-		};
-		const VEC3 reallyBigScale = {1.6f, 1.6f, 1.6f};
-		const VEC3 bigScale = {1.2f, 1.2f, 1.2f};
-		const VEC3 smallScale = {0.75f, 0.75f, 0.75f};
-		for (int i = 0; i < 6; i++) {
-			const VEC3 *whichScale = &smallScale;
-			if (i == 1)
-				whichScale = &bigScale;
-			else if (i == 3 || i == 5)
-				whichScale = &reallyBigScale;
-			effects[i].spawn("Wm_cs_torch", 0, &torchPos[i], &efRot, whichScale);
-		}
-
-		// Mountain Snow
-		const VEC3 efPos = {5500.0f, -5050.0f, 7000.0f};
-		effects[6].spawn("Wm_cs_snow_b", 0, &efPos, &efRot, 0);
-	}
-#else
 	if (mapID == 1) {
-		// Fullmap.
-		// Torches
-		static const VEC3 torchPos[6] = {
-			{8402.0f, -5528.0f, 7000.0f}, // Big Tower
-			{8444.0f, -5524.0f, 7000.0f}, // Tower
-			{8358.0f, -5524.0f, 7000.0f}, // Tower
-			{8420.0f, -5534.0f, 7000.0f}, // Tower
-			{8380.0f, -5534.0f, 7000.0f}, // Tower
-			{7804.0f, -5064.0f, 7000.0f}, // Castle
-		};
-		const VEC3 reallyBigScale = {1.6f, 1.6f, 1.6f};
-		const VEC3 bigScale = {1.2f, 1.2f, 1.2f};
-		const VEC3 smallScale = {0.25f, 0.25f, 0.25f};
-		for (int i = 0; i < 6; i++) {
-			const VEC3 *whichScale = &smallScale;
-			if (i == 0)
-				whichScale = &bigScale;
-			else if (i == 5)
-				whichScale = &reallyBigScale;
-			effects[i].spawn("Wm_cs_torch", 0, &torchPos[i], &efRot, whichScale);
-		}
-
-		// Mountain Snow
-		const VEC3 efPos = {6000.0f, -5250.0f, 7000.0f};
-		effects[6].spawn("Wm_cs_snow_b", 0, &efPos, &efRot, 0);
-	}
-#endif
-
-	if (mapID == 4) {
-		// Freezeflame Volcano -- DONE
-		const VEC3 efPos = {2200.0f, -2000.0f, 7000.0f};
-		effects[0].spawn("Wm_cs_firespark", 0, &efPos, &efRot, 0);
-	}
-
-	if (mapID == 6) {
-		// Koopa Planet -- DONE
-		const VEC3 efPos = {2200.0f, -2000.0f, 7000.0f};
-		effects[0].spawn("Wm_cs_firespark", 0, &efPos, &efRot, 0);
-	}
-
-	if (mapID == 7) {
 		// Koopa Core -- DONE
 		// Main area
 		const VEC3 efPos = {2500.0f, -2900.0f, 7000.0f};
@@ -633,14 +564,6 @@ void dWMMap_c::doEffects() {
 		// Challenge House area
 		const VEC3 efPos3 = {2500.0f, -5500.0f, 7000.0f};
 		effects[2].spawn("Wm_cs_firespark", 0, &efPos2, &efRot, 0);
-	}
-
-	if (mapID == 3) {
-		// Mountain Backside -- DONE
-		VEC3 efPos = {3930.0f, -2700.0f, 7000.0f};
-		effects[0].spawn("Wm_cs_snow_a", 0, &efPos, &efRot, 0);
-		efPos.y -= 700.0f;
-		effects[1].spawn("Wm_cs_snow_a", 0, &efPos, &efRot, 0);
 	}
 
 }

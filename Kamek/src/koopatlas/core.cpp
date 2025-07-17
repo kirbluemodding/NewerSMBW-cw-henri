@@ -21,6 +21,7 @@ CREATE_STATE_E(dScKoopatlas_c, EasyPairingWait);
 CREATE_STATE_E(dScKoopatlas_c, PowerupsWait);
 CREATE_STATE_E(dScKoopatlas_c, ShopWait);
 CREATE_STATE_E(dScKoopatlas_c, CoinsWait);
+CREATE_STATE_E(dScKoopatlas_c, WMViewerWait);
 CREATE_STATE_E(dScKoopatlas_c, SaveOpen);
 CREATE_STATE_E(dScKoopatlas_c, SaveSelect);
 CREATE_STATE_E(dScKoopatlas_c, SaveWindowClose);
@@ -334,7 +335,7 @@ int dScKoopatlas_c::onCreate() {
 
 	SpammyReport("onCreate() called\n");
 
-	SpammyReport("Freeing effects\n"); // Opening cutscene loads vs effects for some reason and fragments RAM too much for some maps
+	SpammyReport("Freeing effects\n"); // Opening cutscene loads vs effects for some reason and segments RAM too much for some maps
 	FreeEffects(0);
 	FreeBreff(0);
 	FreeBreft(0);
@@ -437,6 +438,24 @@ int dScKoopatlas_c::onCreate() {
 	}
 
 	somethingAboutSound(_8042A788);
+	
+	// Set borders
+	// W1
+	WMBorder.xLeft[0] = 1344.0f;
+	WMBorder.xRight[0] = 4524.0f;
+	WMBorder.yTop[0] = -1800.0f;
+	WMBorder.yBottom[0] = -2472.0f;
+	// W2
+	WMBorder.xLeft[1] = 0.0f;
+	WMBorder.xRight[1] = 0.0f;
+	WMBorder.yTop[1] = 0.0f;
+	WMBorder.yBottom[1] = 0.0f;
+	
+	//...
+	
+	sfxIsPlaying = false;
+	sfxShouldPlay = false;
+	WMViewerVisible = false;
 
 	return true;
 }
@@ -541,7 +560,12 @@ void dScKoopatlas_c::executeState_Normal() {
 
 	if (pathManager.doingThings())
 		return;
-
+	
+	if (scrollHandle.Exists()) {
+		scrollHandle.Stop(0);
+		sfxIsPlaying = false;
+	}
+	
 	int nowPressed = Remocon_GetPressed(GetActiveRemocon());
 
 	// Nothing related to the menu is going on
@@ -563,7 +587,16 @@ void dScKoopatlas_c::executeState_Normal() {
 	 		for (int l = 0; l < 6; l++)
 	 			save->SetLevelCondition(w, l, COND_COIN_ALL);
 #endif
-	} 
+	} else if (nowPressed & WPAD_A) {
+		WMViewerVisible = true;
+		hud->hideAll();
+		MapSoundPlayer(SoundRelatedClass, SE_SYS_MAP_VIEW_MODE, 1);
+		state.setState(&StateID_WMViewerWait);
+	}
+	else if (nowPressed & WPAD_B)
+	{
+		OSReport("Pos X/Y Mario: %02f, %02f\n", player->pos.x, player->pos.y);
+	}
 }
 
 void dScKoopatlas_c::executeState_CSMenu() {
@@ -616,7 +649,6 @@ void dScKoopatlas_c::executeState_CSMenu() {
 					// Title Screen (now wii menu)
 					MapReport("Wii Menu was pressed\n");
 					OSReturnToMenu();
-					break;
 			}
 
 		} else {
@@ -784,6 +816,45 @@ void dScKoopatlas_c::executeState_CoinsWait() {
 	if (!coins->visible) {
 		state.setState(&StateID_Normal);
 		hud->unhideAll();
+	}
+
+}
+
+
+void dScKoopatlas_c::executeState_WMViewerWait() {
+
+	int nowPressed = Remocon_GetPressed(GetActiveRemocon());
+
+	if (nowPressed & WPAD_A) {
+		if (sfxIsPlaying || scrollHandle.Exists()) {
+			scrollHandle.Stop(0);
+			sfxIsPlaying = false;
+		}
+
+		dWorldCamera_c::instance->panToPosition(player->pos.x, player->pos.y, 2.8f, true);
+
+		WMViewerVisible = false;
+
+		MapSoundPlayer(SoundRelatedClass, SE_SYS_MAP_VIEW_QUIT, 1);
+		state.setState(&StateID_Normal);
+		hud->unhideAll();
+	}
+
+	if (sfxShouldPlay)
+	{
+		if (!sfxIsPlaying)
+		{
+			PlaySoundWithFunctionB4(SoundRelatedClass, &scrollHandle, SE_SYS_MAP_VIEW_MOVING, 1);
+			sfxIsPlaying = true;
+		}
+	}
+	else
+	{
+		if (sfxIsPlaying)
+		{
+			scrollHandle.Stop(0);
+			sfxIsPlaying = false;
+		}
 	}
 
 }
@@ -1142,6 +1213,31 @@ void dScKoopatlas_c::executeState_CompletionMsg() {
 		const wchar_t *baseText = completionMsgs[type];
 		// Used when we assemble a dynamic message
 		wchar_t text[512];
+
+		if (type >= CMP_MSG_COINS && type <= CMP_MSG_WORLD) {
+			// title
+			int w = pathManager.completionMessageWorldNum;
+			int l = ((w == 5) || (w == 7)) ? 101 : 100;
+			dLevelInfo_c::entry_s *titleEntry = dLevelInfo_c::s_info.searchByDisplayNum(w, l);
+			const char *title = dLevelInfo_c::s_info.getNameForLevel(titleEntry);
+
+			// assemble the string
+
+			wcscpy(text, baseText);
+			int pos = wcslen(text);
+
+			text[pos++] = ' ';
+
+			while (*title) {
+				char chr = *(title++);
+				if (chr != '-')
+					text[pos++] = chr;
+			}
+
+			text[pos++] = '!';
+			text[pos++] = 0;
+			baseText = text;
+		}
 
 		yesNoWindow->T_question_00->SetString(baseText);
 		yesNoWindow->T_questionS_00->SetString(baseText);

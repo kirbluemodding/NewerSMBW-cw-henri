@@ -1,4 +1,8 @@
 SECTIONS {
+	OSPanic__FPCciPCce = 0x801AD620;
+	OSFatal__FP9_gx_colorP9_gx_colorPCc = 0x801AF710;
+	__OSGetSystemTime__Fv = 0x801B60F0;
+	
 	OSReturnToDataManager__Fv = 0x801B3C80;
 	OSReturnToMenu__Fv = 0x801B3C40;
 

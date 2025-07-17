@@ -88,8 +88,6 @@ bool daFakeStarCoin::collisionCat9_RollingObject(ActivePhysics *apThis, ActivePh
 	SpawnEffect("Wm_ob_cmnboxgrain", 0, &this->pos, &(S16Vec){0,0,0}, &(Vec){1.0, 1.0, 1.0});
 	SpawnEffect("Wm_en_obakedoor_sm", 0, &this->pos, &(S16Vec){0,0,0}, &(Vec){1.0, 1.0, 1.0});
 
-	PlaySound(this, SE_BOSS_JR_FLOOR_BREAK);
-
 	//FIXME changed to dStageActor_c::Delete(u8) from fBase_c::Delete(void)
 	this->Delete(1);
 	return true;
@@ -172,7 +170,7 @@ void daFakeStarCoin::updateModelMatrices() {
 int daFakeStarCoin::onExecute() {
 	updateModelMatrices();
 
-	this->rot.x += 0x200;
+	this->rot.y += 0x400;
 	return true;
 }
 

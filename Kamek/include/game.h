@@ -8,6 +8,9 @@
 
 #include <g3dhax.h>
 
+// halts game and prints an error on screen
+void OSFatal(GXColor *text, GXColor *background, const char *msg);
+
 template <typename T>
 inline T min(T one, T two) { return (one < two) ? one : two; }
 template <typename T>

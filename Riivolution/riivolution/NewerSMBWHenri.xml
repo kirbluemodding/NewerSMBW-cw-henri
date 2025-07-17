@@ -55,6 +55,7 @@
 		<folder external="Maps" disc="/Maps" create="true" />
 		<folder external="Maps/Texture" disc="/Maps" create="true" />
 		<folder external="Stages" disc="/Stage" create="true" />
+		<folder external="HomeButton2" disc="/HomeButton2" create="true" />
 		
 		<!-- Inject Newer loader -->
 		<!-- EU --> <memory offset="0x80328478" value="80001800" original="8015BC60" />

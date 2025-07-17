@@ -745,7 +745,7 @@ void dWMPathManager_c::execute() {
 				waitAfterInitialPlayerAnim = 60;
 
 				nw4r::snd::SoundHandle something;
-				PlaySoundWithFunctionB4(SoundRelatedClass, &something, SE_VOC_LU_CS_COURSE_MISS, 1);
+				PlaySoundWithFunctionB4(SoundRelatedClass, &something, SE_VOC_MA_CS_COURSE_MISS, 1);
 			} else if (mustPlayAfterWinAnim) {
 				daWMPlayer_c::instance->visible = true;
 				if (dScKoopatlas_c::instance->isAfter8Castle) {
@@ -756,7 +756,7 @@ void dWMPathManager_c::execute() {
 
 					nw4r::snd::SoundHandle something;
 					if (!wm->isEndingScene)
-						PlaySoundWithFunctionB4(SoundRelatedClass, &something, SE_VOC_LU_CS_JUMP, 1);
+						PlaySoundWithFunctionB4(SoundRelatedClass, &something, SE_VOC_MA_CS_JUMP, 1);
 				}
 			}
 		}
@@ -871,7 +871,7 @@ void dWMPathManager_c::execute() {
 		dmGladDuration--;
 		if (dmGladDuration == 60) {
 			nw4r::snd::SoundHandle something;
-			PlaySoundWithFunctionB4(SoundRelatedClass, &something, SE_VOC_LU_CLEAR_MULTI, 1);
+			PlaySoundWithFunctionB4(SoundRelatedClass, &something, SE_VOC_MA_CLEAR_MULTI, 1);
 		} else if (dmGladDuration == 0) {
 			daWMPlayer_c::instance->startAnimation(wait_select, 1.0f, 0.0f, 0.0f);
 		}
@@ -1050,10 +1050,10 @@ void dWMPathManager_c::startMovementTo(dKPPath_s *path) {
 		const char *repeatEffect, *initialEffect;
 	} Animations[] = {
 		// Walking
-		{run,2.0f,10.0f, -1,-1.0f, SE_PLY_FOOTNOTE_DIRT,SE_NULL, 0,0},
-		{run,2.0f,10.0f, -1,-1.0f, SE_PLY_FOOTNOTE_CS_SAND,SE_NULL, "Wm_mr_foot_sand",0},
-		{run,2.0f,10.0f, -1,-1.0f, SE_PLY_FOOTNOTE_CS_SNOW,SE_NULL, "Wm_mr_foot_snow",0},
-		{run,2.0f,10.0f, -1,-1.0f, SE_PLY_FOOTNOTE_CS_WATER,SE_NULL, "Wm_mr_foot_water",0},
+		{run,4.0f,10.0f, -1,-1.0f, SE_PLY_FOOTNOTE_DIRT,SE_NULL, 0,0},
+		{run,6.0f,10.0f, -1,-1.0f, SE_EMY_PAKKUN_FIRE,SE_VOC_MA_DAMAGE_FIRE, "Wm_en_explosion_smk",0},
+		{run,4.0f,10.0f, -1,-1.0f, SE_PLY_FOOTNOTE_CS_SNOW,SE_NULL, "Wm_mr_foot_snow",0},
+		{run,4.0f,10.0f, -1,-1.0f, SE_PLY_FOOTNOTE_CS_WATER,SE_NULL, "Wm_mr_foot_water",0},
 
 		// Jumping
 		{jump,1.0f,1.0f, -1,2.5f, SE_NULL,SE_PLY_JUMP, 0,0},
@@ -1061,7 +1061,7 @@ void dWMPathManager_c::startMovementTo(dKPPath_s *path) {
 		{jump,1.0f,10.0f, -1,2.5f, SE_NULL,SE_PLY_JUMP, 0,0},
 
 		// Jump water (actually cannon)
-		{dm_notice,1.0f,10.0f, -1,-1.0f, SE_NULL,SE_VOC_LU_CANNON_SHOT, 0,0},
+		{dm_notice,1.0f,10.0f, -1,-1.0f, SE_NULL,SE_VOC_MA_CANNON_SHOT, 0,0},
 
 		// Ladder up, left, right
 		{pea_plant,1.2f,10.0f, -0x7FFF,1.5f, SE_PLY_FOOTNOTE_CS_ROCK_CLIMB,SE_NULL, 0,0},
@@ -1086,7 +1086,7 @@ void dWMPathManager_c::startMovementTo(dKPPath_s *path) {
 		{run,1.0f,10.0f, -1,1.0f, SE_NULL,SE_NULL, 0,0},
 
 		// Cannon 2
-		{dm_noti_wait,1.0f,10.0f, -1,-1.0f, SE_NULL,SE_VOC_LU_CANNON_SHOT, 0,0},
+		{dm_noti_wait,1.0f,10.0f, -1,-1.0f, SE_NULL,SE_VOC_MA_CANNON_SHOT, 0,0},
 
 		// Invisible, this is handled specially
 		{wait,2.0f,10.0f, -1,1.0f, SE_NULL,SE_NULL, 0,0},
@@ -1174,7 +1174,7 @@ void dWMPathManager_c::startMovementTo(dKPPath_s *path) {
 			if (!swimming) {
 				nw4r::snd::SoundHandle something;
 				if (firstPathDone)
-					PlaySoundWithFunctionB4(SoundRelatedClass, &something, SE_VOC_LU_PNGN_SLIDE, 1);
+					PlaySoundWithFunctionB4(SoundRelatedClass, &something, SE_VOC_MA_PNGN_SLIDE, 1);
 				PlaySoundWithFunctionB4(SoundRelatedClass, &penguinSlideSound, SE_EMY_PENGUIN_SLIDE, 1);
 			}
 			player->hasSound = false;
@@ -1196,7 +1196,7 @@ void dWMPathManager_c::startMovementTo(dKPPath_s *path) {
 
 			if (Animations[id].initialSound == SE_PLY_JUMP) {
 				nw4r::snd::SoundHandle something2;
-				PlaySoundWithFunctionB4(SoundRelatedClass, &something2, SE_VOC_LU_CS_JUMP, 1);
+				PlaySoundWithFunctionB4(SoundRelatedClass, &something2, SE_VOC_MA_CS_JUMP, 1);
 				something2.SetPitch(player->modelHandler->mdlClass->powerup_id == 3 ? 1.5f : 1.0f);
 			}
 		}
@@ -1546,7 +1546,7 @@ void dWMPathManager_c::activatePoint() {
 		PlaySoundWithFunctionB4(SoundRelatedClass, &something, SE_SYS_GAME_START, 1);
 
 		nw4r::snd::SoundHandle something2;
-		PlaySoundWithFunctionB4(SoundRelatedClass, &something2, SE_VOC_LU_CS_COURSE_IN, 1);
+		PlaySoundWithFunctionB4(SoundRelatedClass, &something2, SE_VOC_MA_CS_COURSE_IN_HARD, 1);
 
 		daWMPlayer_c::instance->startAnimation(course_in, 1.2, 10.0, 0.0);
 		daWMPlayer_c::instance->setTargetRotY(0);

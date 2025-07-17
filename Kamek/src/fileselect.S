@@ -331,7 +331,7 @@ DefaultSavefileInfoData:
 #ifdef FALLING_LEAF
 .string "Unknown Island" #15
 #else
-.string "Yoshi's Island" #15
+.string "Henri's Island" #15
 #endif
 .byte 0,0,0,0,0,0,0,0,0,0,0 # 11
 .byte 0,0,0,0,0,0 # 6
