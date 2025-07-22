@@ -657,6 +657,9 @@ void dCreditsMgr_c::exitStage() {
 Vec2 dCreditsMgr_c::_vf70() {
 	// HACK OF THE MILLENIUM
 	// DON'T TRY THIS AT HOME.
+
+	// acting tough like they didn't just spell millennium wrong lmao
+	
 	Vec2 *v = (Vec2*)this;
 	v->x = 10454.0f;
 	v->y = -320.0f;

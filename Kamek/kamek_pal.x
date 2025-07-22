@@ -1,4 +1,62 @@
 SECTIONS {
+	/* liquidtex */
+	returnFromGetLavaWavesSubType = 0x80075524;
+	returnFromSaveLiquidSettings = 0x807b4d34;
+	continueBGpolyCreate = 0x807b4d14;
+	returnFromSelectDifferentLiquidsSet = 0x800eb1ac;
+	returnFromSelectDifferentLiquidsSet2 = 0x800ebe84;
+	dWaterManager_c__add = 0x800eb6d0;
+	returnFromSaveLiquiSubTypesInNewArray = 0x807b502c;
+	returnFromUseDifferentSplashEffects = 0x80092128;
+	returnFromSelectDifferentLavaDeco = 0x800ebeb4;
+	doneWithLavaParticlesColor = 0x80888CD8;
+	continueOriginalCheckWater = 0x80075274;
+	returnFromSaveGlobalWaterSubType = 0x807b5954;
+	returnFromSaveGlobalLavaSubType = 0x807b59fc;
+	returnFromSaveGlobalPoisonSubType = 0x807b5a90;
+	returnFromLoadGlobalSubType = 0x80075524;
+	returnFromPlayerUsePoisonSplashSubType = 0x8013dcb4;
+	returnFromPlayerUseLavaSplashSubType = 0x8013e1f8;
+	returnFromUseDifferentSplashEffects2 = 0x800920f0;
+	returnFromIceUseLavaSplashSubType = 0x8011f5fc;
+	returnFromIceUsePoisonSplashSubType = 0x80122108;
+	returnFromPodobooUseLavaSplashSetting = 0x809d19c0;
+	FUN_8008fba0__FiPQ23mEf3es2PcUiP7Point3dUiPf = 0x8008fba0;
+	FUN_8008fb60__FiPcUiP7Point3dP6S16VecP7Point3d = 0x8008fb60;
+
+	obj_waterfull = 0x8031b740;
+	obj_waterhalf = 0x8031b758;
+	obj_magma = 0x8031b770;
+	obj_poisonwater = 0x8031b784;
+	obj_quicksand = 0x8031b7a0;
+	obj_envfog = 0x8031b7b8;
+	obj_magmawave = 0x8031b958;
+	obj_magmadeco = 0x8031bb18;
+
+	aWm_en_waterwav = 0x80311830;
+	aWm_en_cmnwat_0 = 0x80311844;
+	aWm_en_waterspl = 0x80311854;
+	aWm_en_firevani = 0x80311868;
+	aWm_en_cmnmag_1 = 0x8031187c;
+	aWm_en_magmaw_0 = 0x80311890;
+	aWm_en_poisonin = 0x803118a0;
+	aWm_en_poisonwa = 0x803118b4;
+	
+	returnFromUseDifferentSplashEffects3 = 0x80a1dd14;
+	returnFromUseDifferentSplashEffects4 = 0x80a1dcdc;
+	
+	returnFromLavaCheck1False = 0x80075364;
+	returnFromLavaCheck1True = 0x80075304;
+	returnFromLavaCheck2False = 0x800920CC;
+	returnFromLavaCheck2True = 0x80092090;
+	returnFromLavaCheck3 = 0x8011F5C8;
+	returnFromLavaCheck4False = 0x800EBE4C;
+	returnFromLavaCheck4True = 0x800EBE10;
+	returnFromLavaCheck5False = 0x8000BA70;
+	returnFromLavaCheck5True = 0x8000C5C0;
+	
+	continueOriginalCheckWater = 0x80075274;
+
 	OSPanic__FPCciPCce = 0x801AD620;
 	OSFatal__FP9_gx_colorP9_gx_colorPCc = 0x801AF710;
 	__OSGetSystemTime__Fv = 0x801B60F0;

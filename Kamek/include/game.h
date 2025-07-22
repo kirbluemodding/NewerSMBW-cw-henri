@@ -8,9 +8,6 @@
 
 #include <g3dhax.h>
 
-// halts game and prints an error on screen
-void OSFatal(GXColor *text, GXColor *background, const char *msg);
-
 template <typename T>
 inline T min(T one, T two) { return (one < two) ? one : two; }
 template <typename T>
@@ -247,6 +244,7 @@ public:
 	union {
 		u16 credits_hiscore;		// 0x66
 		u16 spentStarCoins;
+		u8 is_evil;
 	};
 	u16 score;					// 0x68
 	u32 completions[10][0x2A];	// 0x6C
@@ -2684,31 +2682,64 @@ struct dWaterInfo_s {
 	u8 type, layer;
 };
 
+class dWaterEntryMng_c {
+public:
+	struct WaterData {
+		Vec pos;
+		float width, height;
+		u32 isInUse;
+		u8 type; // 0 = water, 1 = lava, 2 = poison, 3 = round bubble, 4 = tall bubble, 5 = wide bubble
+		u8 layer;
+		u8 pad[2];
+	};
+
+	WaterData data[80];
+	float current;
+
+	static dWaterEntryMng_c *instance; // 0x8042A3E0
+};
+
+struct WaterData {
+    float x;
+    float y;
+    float z;
+    float width;
+    float height;
+    u32 isInUse;
+    u8 type; /*        0 = water
+                    1 = lava
+                    2 = poison
+                    3 = round bubble
+                    4 = tall bubble
+                    5 = wide bubble */
+    u8 layer;
+    u16 pad;
+};
+
 class dWaterManager_c {
-	private:
-		dWaterInfo_s blocks[80];
-	public:
-		float current;
+    public:
+        WaterData data[80];
+        float current;
 
-		static dWaterManager_c *instance;
+        static dWaterManager_c *instance;
 
-		dWaterManager_c() { instance = this; }
-		~dWaterManager_c() { instance = 0; }
+        dWaterManager_c() { instance = this; }
+        ~dWaterManager_c() { instance = 0; }
 
-		void setup();
-		int addBlock(dWaterInfo_s *block);
+        void setup();
+        int addBlock(WaterData *block);
 
-	private: // ?
-		int isPointWithinSpecifiedBlock(VEC2 *pos, int blockID);
-		int getAngleOfVector(VEC2 *vec);
-		int isPointWithinBubbleInternal(VEC2 *pos, int blockID, VEC2 *pOutVec, float *pFloat, s16 *pShort);
+    public: // i think this should be public, why was it private anyway
+        int isPointWithinSpecifiedBlock(VEC2 *pos, int blockID);
+        int getAngleOfVector(VEC2 *vec);
+        int isPointWithinBubbleInternal(VEC2 *pos, int blockID, VEC2 *pOutVec, float *pFloat, s16 *pShort);
 
-	public:
-		int queryPosition(VEC2 *pos, VEC2 *pOutBlockPos, float *pOutFloat, s16 *pOutAngle, int layer);
-		int isPositionWithinBubble(VEC2 *pos, VEC2 *pOutBlockPos, int blockID, int layer);
-		void removeBlock(int blockID);
-		void setPosition(VEC3 *pos, int blockID);
-		void setGeometry(VEC3 *pos, float width, float height, int blockID);
+    public:
+        int queryPosition(VEC2 *pos, VEC2 *pOutBlockPos, float *pOutFloat, s16 *pOutAngle, int layer);
+        int isPositionWithinBubble(VEC2 *pos, VEC2 *pOutBlockPos, int blockID, int layer);
+        void removeBlock(int blockID);
+        void setPosition(VEC3 *pos, int blockID);
+        void setGeometry(VEC3 *pos, float width, float height, int blockID);
 };
 
 class BgGmBase : public dBase_c {

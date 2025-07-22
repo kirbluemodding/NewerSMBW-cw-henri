@@ -577,10 +577,12 @@ void dScKoopatlas_c::executeState_Normal() {
 		CSMENU_ACTIVE(this->csMenu) = true;
 		state.setState(&StateID_CSMenu);
 		hud->hideAll();
-#ifdef NEWER_DEBUG
+#ifndef NEWER_DEBUG // REMEMBER TO CHANGE WHEN YOU'RE DONE!!!
 	 } else if (nowPressed & WPAD_MINUS) {
+		MapSoundPlayer(SoundRelatedClass, SE_SYS_ROUTE_OK, 1);
 	 	pathManager.unlockAllPaths(2);
-	 } else if (nowPressed & WPAD_A) {
+	 } else if (nowPressed & WPAD_B) {
+		MapSoundPlayer(SoundRelatedClass, SE_SYS_ROUTE_OK, 1);
 	 	pathManager.unlockAllPaths(0);
 	 	SaveBlock *save = GetSaveFile()->GetBlock(-1);
 	 	for (int w = 0; w < 6; w++)

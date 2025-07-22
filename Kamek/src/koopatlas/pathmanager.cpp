@@ -636,10 +636,11 @@ bool dWMPathManager_c::evaluateUnlockCondition(u8 *&in, SaveBlock *save, int sta
 	u8 controlByte = *(in++);
 
 	u8 conditionType = (controlByte >> 6);
-	UnlockCmdReport("[%p] CondStk:%d control byte: %d; condition type: %d\n", in, stack, controlByte, conditionType);
+	bool isNot = (controlByte & 0x20) != 0; // Use bit 5 as NOT flag (0x20)
+	UnlockCmdReport("[%p] CondStk:%d control byte: %d; condition type: %d; isNot: %d\n", in, stack, controlByte, conditionType, isNot);
 
 	if (conditionType == 0) {
-		u8 subConditionType = controlByte & 0x3F;
+		u8 subConditionType = controlByte & 0x1F; // Mask out NOT bit
 		switch (subConditionType) {
 			case 0: case 1: case 2: case 3:
 				u8 one = *(in++);
@@ -648,23 +649,29 @@ bool dWMPathManager_c::evaluateUnlockCondition(u8 *&in, SaveBlock *save, int sta
 				int compareOne = (one & 0x80) ? cachedUnspentStarCoinCount : cachedTotalStarCoinCount;
 				int compareTwo = ((one & 0x7F) << 8) | two;
 
+				bool result = false;
 				switch (subConditionType) {
 					case 0:
-						return compareOne == compareTwo;
+						result = (compareOne == compareTwo);
+						break;
 					case 1:
-						return compareOne != compareTwo;
+						result = (compareOne != compareTwo);
+						break;
 					case 2:
-						return compareOne < compareTwo;
+						result = (compareOne < compareTwo);
+						break;
 					case 3:
-						return compareOne > compareTwo;
+						result = (compareOne > compareTwo);
+						break;
 				}
+				return isNot ? !result : result;
 
 			case 15:
 				UnlockCmdReport("[%p] CondStk:%d end, returning CONSTANT 1\n", in, stack);
-				return true;
+				return isNot ? false : true;
 			default:
 				UnlockCmdReport("[%p] CondStk:%d unknown subCondition %d, returning 0\n", in, stack, subConditionType);
-				return false;
+				return isNot ? true : false;
 		}
 	}
 
@@ -679,10 +686,8 @@ bool dWMPathManager_c::evaluateUnlockCondition(u8 *&in, SaveBlock *save, int sta
 		u32 conds = save->GetLevelCondition(worldNumber, levelNumber);
 		UnlockCmdReport("[%p] CondStk:%d returning for level conditions: %d / %x\n", in, stack, conds, conds);
 
-		if (isSecret)
-			return (conds & COND_SECRET) != 0;
-		else
-			return (conds & COND_NORMAL) != 0;
+		bool result = isSecret ? ((conds & COND_SECRET) != 0) : ((conds & COND_NORMAL) != 0);
+		return isNot ? !result : result;
 	}
 
 	// Type: 2 = AND, 3 = OR
@@ -691,7 +696,7 @@ bool dWMPathManager_c::evaluateUnlockCondition(u8 *&in, SaveBlock *save, int sta
 
 	bool value = isOr ? false : true;
 
-	u8 termCount = (controlByte & 0x3F) + 1;
+	u8 termCount = (controlByte & 0x1F) + 1; // Mask out NOT bit
 	UnlockCmdReport("[%p] CondStk:%d and:%d or:%d startValue:%d termCount:%d\n", in, stack, isAnd, isOr, value, termCount);
 
 	for (int i = 0; i < termCount; i++) {
@@ -704,7 +709,7 @@ bool dWMPathManager_c::evaluateUnlockCondition(u8 *&in, SaveBlock *save, int sta
 	}
 
 	UnlockCmdReport("[%p] CondStk:%d end, returning %d\n", in, stack, value);
-	return value;
+	return isNot ? !value : value;
 }
 
 
@@ -1053,7 +1058,7 @@ void dWMPathManager_c::startMovementTo(dKPPath_s *path) {
 		{run,4.0f,10.0f, -1,-1.0f, SE_PLY_FOOTNOTE_DIRT,SE_NULL, 0,0},
 		{run,6.0f,10.0f, -1,-1.0f, SE_EMY_PAKKUN_FIRE,SE_VOC_MA_DAMAGE_FIRE, "Wm_en_explosion_smk",0},
 		{run,4.0f,10.0f, -1,-1.0f, SE_PLY_FOOTNOTE_CS_SNOW,SE_NULL, "Wm_mr_foot_snow",0},
-		{run,4.0f,10.0f, -1,-1.0f, SE_PLY_FOOTNOTE_CS_WATER,SE_NULL, "Wm_mr_foot_water",0},
+		{run,4.0f,10.0f, -1,-1.0f, SE_OBJ_CMN_SPLASH_LAVA,SE_NULL, 0,0},
 
 		// Jumping
 		{jump,1.0f,1.0f, -1,2.5f, SE_NULL,SE_PLY_JUMP, 0,0},
@@ -1115,13 +1120,6 @@ void dWMPathManager_c::startMovementTo(dKPPath_s *path) {
 	int id = (path->animation >= dKPPath_s::MAX_ANIM) ? 0 : (int)path->animation;
 	int whichAnim = Animations[id].anim;
 	float updateRate = Animations[id].animParam1;
-	if (whichAnim == swim_wait) {
-		if (player->modelHandler->mdlClass->powerup_id == 3) {
-			whichAnim = b_dash;
-			updateRate = 2.5f;
-		} else if (player->modelHandler->mdlClass->powerup_id == 5)
-			whichAnim = P_slip;
-	}
 
 	if (Animations[id].forceRotation != -1) {
 		forcedRotation = true;

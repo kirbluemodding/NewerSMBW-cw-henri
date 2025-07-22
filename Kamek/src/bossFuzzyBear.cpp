@@ -55,8 +55,8 @@ class daFuzzyBear_c : public daBoss {
 	USING_STATES(daFuzzyBear_c);
 	DECLARE_STATE(Grow);
 	DECLARE_STATE(Bounce);
-	// DECLARE_STATE(Needles);
-	//DECLARE_STATE(Spray);
+	DECLARE_STATE(Needles);
+	DECLARE_STATE(Spray);
 	DECLARE_STATE(RolyPoly);
 	DECLARE_STATE(Wait);
 	DECLARE_STATE(Outro);
@@ -71,8 +71,8 @@ daFuzzyBear_c *daFuzzyBear_c::build() {
 
 CREATE_STATE(daFuzzyBear_c, Grow);
 CREATE_STATE(daFuzzyBear_c, Bounce);
-// CREATE_STATE(daFuzzyBear_c, Needles);
-//CREATE_STATE(daFuzzyBear_c, Spray);
+CREATE_STATE(daFuzzyBear_c, Needles);
+CREATE_STATE(daFuzzyBear_c, Spray);
 CREATE_STATE(daFuzzyBear_c, RolyPoly);
 CREATE_STATE(daFuzzyBear_c, Wait);
 CREATE_STATE(daFuzzyBear_c, Outro);
@@ -94,8 +94,8 @@ bool daFuzzyBear_c::collisionCat1_Fireball_E_Explosion(ActivePhysics *apThis, Ac
 	if (this->damage > 14) { doStateChange(&StateID_Outro); }
 	return true;
 }
-bool daFuzzyBear_c::collisionCat7_GroundPound(ActivePhysics *apThis, ActivePhysics *apOther) { 
-	apOther->someFlagByte |= 2;
+bool daFuzzyBear_c::collisionCat7_GroundPound(ActivePhysics *apThis, ActivePhysics *apOther) { // what in the genuine hell is this bruh
+	/*apOther->someFlagByte |= 2;
 
 	dActor_c *block = apOther->owner;
 	dEn_c *mario = (dEn_c*)block;
@@ -108,7 +108,7 @@ bool daFuzzyBear_c::collisionCat7_GroundPound(ActivePhysics *apThis, ActivePhysi
 	
 	mario->doSpriteMovement();
 	mario->doSpriteMovement();
-	return true;
+	return true;*/
 }
 bool daFuzzyBear_c::collisionCat7_GroundPoundYoshi(ActivePhysics *apThis, ActivePhysics *apOther) { 
 	this->counter_504[apOther->owner->which_player] = 0;
@@ -207,8 +207,10 @@ void daFuzzyBear_c::bindAnimChr_and_setUpdateRate(const char* name, int unk, flo
 void daFuzzyBear_c::setupBodyModel() {
 	allocator.link(-1, GameHeaps[0], 0, 0x20);
 
+	// fuzzy model
 	this->resFile.data = getResource("chorobon", "g3d/chorobon.brres");
 	nw4r::g3d::ResMdl mdl = this->resFile.GetResMdl("chorobon");
+	
 	bodyModel.setup(mdl, &allocator, 0x224, 1, 0);
 	SetupTextures_Enemy(&bodyModel, 0);
 
@@ -464,80 +466,80 @@ void daFuzzyBear_c::endState_Bounce() { }
 
 // Needles State - shoots out some black icicles
 
-// void daFuzzyBear_c::beginState_Needles() {
-// 	this->timer = 0;
-// 	this->speed.y = 0;	
-// 	this->speed.x = 0;
-// 	OSReport("Fuzzy Needle State Begin"); 
-// }
-// void daFuzzyBear_c::executeState_Needles() { 
-// 	float origScale;
+void daFuzzyBear_c::beginState_Needles() {
+	this->timer = 0;
+	this->speed.y = 0;	
+	this->speed.x = 0;
+	OSReport("Fuzzy Needle State Begin"); 
+}
+void daFuzzyBear_c::executeState_Needles() { 
+	float origScale;
 
-// 	this->speed.y = 0;	
-// 	this->speed.x = 0;
+	this->speed.y = 0;	
+	this->speed.x = 0;
 
-// 	if (BigBossFuzzyBear == 0) {
-// 		origScale = 2.5;
-// 	}
-// 	else {
-// 		origScale = 3.0;
-// 	}
+	if (BigBossFuzzyBear == 0) {
+		origScale = 2.5;
+	}
+	else {
+		origScale = 3.0;
+	}
 
-// 	this->timer = this->timer + 1;
-// 	OSReport("Needle Timer: %d", this->timer); 
+	this->timer = this->timer + 1;
+	OSReport("Needle Timer: %d", this->timer); 
 
-// 	if (this->timer <= 120) {
-// 		this->scale.y = (sin(this->timer * 3.14 / 5.0) / 2.0) + origScale; // 3 shakes per second, exactly 24 shakes overall
-// 		this->scale.x = (sin(this->timer * 3.14 / 5.0) / 2.0) + origScale; // 3 shakes per second, exactly 24 shakes overall
+	if (this->timer <= 120) {
+		this->scale.y = (sin(this->timer * 3.14 / 5.0) / 2.0) + origScale; // 3 shakes per second, exactly 24 shakes overall
+		this->scale.x = (sin(this->timer * 3.14 / 5.0) / 2.0) + origScale; // 3 shakes per second, exactly 24 shakes overall
 	
-// 		if (this->timer == 30) {
-// 			dStageActor_c *spawner = CreateActor(339, 0, this->pos, 0, 0);
-// 			spawner->speed.x = -6.0;
-// 			spawner->speed.y = 0.0;
-// 			spawner->scale = (Vec){1.0, 1.0, 1.0};
-// 		}
+		if (this->timer == 30) {
+			dStageActor_c *spawner = CreateActor(339, 0, this->pos, 0, 0);
+			spawner->speed.x = -6.0;
+			spawner->speed.y = 0.0;
+			spawner->scale = (Vec){1.0, 1.0, 1.0};
+		}
 
-// 		if (this->timer == 45) {
-// 			dStageActor_c *spawner = CreateActor(339, 0, this->pos, 0, 0);
-// 			spawner->speed.x = 6.0;
-// 			spawner->speed.y = 6.0;
-// 			spawner->scale = (Vec){1.0, 1.0, 1.0};
-// 		}
+		if (this->timer == 45) {
+			dStageActor_c *spawner = CreateActor(339, 0, this->pos, 0, 0);
+			spawner->speed.x = 6.0;
+			spawner->speed.y = 6.0;
+			spawner->scale = (Vec){1.0, 1.0, 1.0};
+		}
 
-// 		if (this->timer == 60) {
-// 			dStageActor_c *spawner = CreateActor(339, 0, this->pos, 0, 0);
-// 			spawner->speed.x = 0.0;
-// 			spawner->speed.y = 6.0;
-// 			spawner->scale = (Vec){1.0, 1.0, 1.0};
-// 		}
+		if (this->timer == 60) {
+			dStageActor_c *spawner = CreateActor(339, 0, this->pos, 0, 0);
+			spawner->speed.x = 0.0;
+			spawner->speed.y = 6.0;
+			spawner->scale = (Vec){1.0, 1.0, 1.0};
+		}
 
-// 		if (this->timer == 75) {
-// 			dStageActor_c *spawner = CreateActor(339, 0, this->pos, 0, 0);
-// 			spawner->speed.x = -6.0;
-// 			spawner->speed.y = 6.0;
-// 			spawner->scale = (Vec){1.0, 1.0, 1.0};
-// 		}
+		if (this->timer == 75) {
+			dStageActor_c *spawner = CreateActor(339, 0, this->pos, 0, 0);
+			spawner->speed.x = -6.0;
+			spawner->speed.y = 6.0;
+			spawner->scale = (Vec){1.0, 1.0, 1.0};
+		}
 
-// 		if (this->timer == 90) {
-// 			dStageActor_c *spawner = CreateActor(339, 0, this->pos, 0, 0);
-// 			spawner->speed.x = -6.0;
-// 			spawner->speed.y = 0.0;
-// 			spawner->scale = (Vec){1.0, 1.0, 1.0};
-// 		}
-// 	}
-// 	else { doStateChange(&StateID_Bounce); }
+		if (this->timer == 90) {
+			dStageActor_c *spawner = CreateActor(339, 0, this->pos, 0, 0);
+			spawner->speed.x = -6.0;
+			spawner->speed.y = 0.0;
+			spawner->scale = (Vec){1.0, 1.0, 1.0};
+		}
+	}
+	else { doStateChange(&StateID_Bounce); }
 
-// 	this->HandleXSpeed();
-// 	this->HandleYSpeed();
+	this->HandleXSpeed();
+	this->HandleYSpeed();
 
-// 	this->UpdateObjectPosBasedOnSpeedValuesReal();
+	this->UpdateObjectPosBasedOnSpeedValuesReal();
 
-// }
-// void daFuzzyBear_c::endState_Needles() { OSReport("Fuzzy Needle State End"); }
+}
+void daFuzzyBear_c::endState_Needles() { OSReport("Fuzzy Needle State End"); }
 
 // Spray State - jumps in the air and shakes out some small fuzzies
 
-/*void daFuzzyBear_c::beginState_Spray() { 
+void daFuzzyBear_c::beginState_Spray() { 
 	this->timer = 0; 
 	this->speed.y = 7.0;
 	this->speed.x = 0.0;
@@ -588,7 +590,7 @@ void daFuzzyBear_c::endState_Spray() {
 	this->rot.y = 0;
 	this->timer = 20;
 	this->falldown = 1;	
-}*/
+}
 
 
 // Roly Poly State - Rolls from left to right, bounces off both walls, and returns to original position.
@@ -696,11 +698,19 @@ void daFuzzyBear_c::executeState_Wait() {
 	this->timer = this->timer + 1;
 
 	if (this->timer > 60) {	
-		doStateChange(&StateID_Bounce);
-		//int randChoice;
+		//doStateChange(&StateID_Bounce);
 		
-		//if (BigBossFuzzyBear == 1) { doStateChange(&StateID_Spray); }
-		//else 					   { doStateChange(&StateID_Bounce); }
+		if (BigBossFuzzyBear == 1) {
+			int randChoice = GenerateRandomNumber(2);
+
+			if (randChoice == 1) {
+				doStateChange(&StateID_Spray);
+			}
+			else {
+				doStateChange(&StateID_Needles);
+			}
+		}
+		else 					   { doStateChange(&StateID_Bounce); }
 	}	
 } 
 void daFuzzyBear_c::endState_Wait() { }
@@ -714,7 +724,7 @@ void daFuzzyBear_c::executeState_Outro() {
 
 	if (this->dying == 1) { 
 		if (this->timer > 180) { 
-			ExitStage(WORLD_MAP, 0, BEAT_LEVEL, MARIO_WIPE); 
+			ExitStage(WORLD_MAP, 0, BEAT_LEVEL, BOWSER_WIPE); 
 		}
 		if (this->timer == 60) { PlayerVictoryCries(this); }	
 		

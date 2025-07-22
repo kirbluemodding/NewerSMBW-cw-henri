@@ -1,0 +1,193 @@
+---
+source_files: [../src/liquidsTex.cpp, ../src/liquidsTex.S]
+hooks:
+  - name: CheckRanOnce
+    type: branch_insn
+    src_addr_pal: 0x807b4d10
+    branch_type: b
+    target_func: 'CheckRanOnce'
+
+  - name: SelectDifferentLiquidsSet
+    type: branch_insn
+    src_addr_pal: 0x800eb1a8
+    branch_type: b
+    target_func: 'SelectDifferentLiquidsSet'
+
+  - name: NoHardcodedWaterTopColor
+    type: nop_insn
+    area_pal: [0x800ec054, 0x800ec070]
+
+  - name: SelectDifferentLiquidsSet2
+    type: branch_insn
+    src_addr_pal: 0x800ebe80
+    branch_type: b
+    target_func: 'SelectDifferentLiquidsSet2'
+
+  - name: SelectDifferentLavaDeco
+    type: branch_insn
+    src_addr_pal: 0x800ebeb0
+    branch_type: b
+    target_func: 'SelectDifferentLavaDeco'
+
+  - name: SaveLiquiSubTypesInNewArray
+    type: branch_insn
+    src_addr_pal: 0x807b5028
+    branch_type: b
+    target_func: 'SaveLiquiSubTypesInNewArray'
+
+  - name: UseDifferentSplashEffects
+    type: branch_insn
+    src_addr_pal: 0x80092124
+    branch_type: b
+    target_func: 'UseDifferentSplashEffects'
+
+  - name: UseDifferentSplashEffects2 #poison uses another effect spawning function?
+    type: branch_insn
+    src_addr_pal: 0x800920ec
+    branch_type: b
+    target_func: 'UseDifferentSplashEffects2'
+
+  - name: UseDifferentSplashEffects3
+    type: branch_insn
+    src_addr_pal: 0x80a1dd10
+    branch_type: b
+    target_func: 'UseDifferentSplashEffects3'
+
+  - name: UseDifferentSplashEffects4
+    type: branch_insn
+    src_addr_pal: 0x80a1dcd8
+    branch_type: b
+    target_func: 'UseDifferentSplashEffects4'
+
+  - name: SaveGlobalWaterSubType
+    type: branch_insn
+    src_addr_pal: 0x807b5950
+    branch_type: b
+    target_func: 'SaveGlobalWaterSubType'
+
+  - name: SaveGlobalLavaSubType
+    type: branch_insn
+    src_addr_pal: 0x807b59f8
+    branch_type: b
+    target_func: 'SaveGlobalLavaSubType'
+
+  - name: SaveGlobalPoisonSubType
+    type: branch_insn
+    src_addr_pal: 0x807b5a8c
+    branch_type: b
+    target_func: 'SaveGlobalPoisonSubType'
+
+  - name: LoadGlobalSubType
+    type: branch_insn
+    src_addr_pal: 0x80075390
+    branch_type: b
+    target_func: 'LoadGlobalSubType'
+
+  - name: PlayerUsePoisonSplashSubType
+    type: branch_insn
+    src_addr_pal: 0x8013dcb0
+    branch_type: b
+    target_func: 'PlayerUsePoisonSplashSubType'
+
+  - name: PlayerUseLavaSplashSubType
+    type: branch_insn
+    src_addr_pal: 0x8013e1f4
+    branch_type: b
+    target_func: 'PlayerUseLavaSplashSubType'
+
+  - name: IceUseLavaSplashSubType
+    type: branch_insn
+    src_addr_pal: 0x8011f5f8
+    branch_type: b
+    target_func: 'IceUseLavaSplashSubType'
+
+  - name: PodobooUseLavaSplashSetting
+    type: branch_insn
+    src_addr_pal: 0x809d19bc
+    branch_type: b
+    target_func: 'PodobooUseLavaSplashSetting'
+
+  - name: IceUsePoisonSplashSubType
+    type: branch_insn
+    src_addr_pal: 0x80122104
+    branch_type: b
+    target_func: 'IceUsePoisonSplashSubType'
+
+  - name: getLiquidSubType
+    type: branch_insn
+    src_addr_pal: 0x80075270
+    branch_type: b
+    target_func: 'getLiquidSubType(float, float, unsigned char, float *)'
+
+  - name: GetLavaWavesSubType
+    type: branch_insn
+    src_addr_pal: 0x80075354
+    branch_type: b
+    target_func: 'GetLavaWavesSubType'
+
+###
+  - name: getSandSubType1
+    type: branch_insn
+    src_addr_pal: 0x8004d3f4
+    branch_type: bl
+    target_func: 'getSandSubType1(unsigned int, unsigned int, char *, unsigned int, unsigned int, unsigned int, float *)'
+###
+
+###
+  - name: getSandSubType2
+    type: branch_insn
+    src_addr_pal: 0x8004d430
+    branch_type: bl
+    target_func: 'getSandSubType2(unsigned int, unsigned int, char *, unsigned int, unsigned int, unsigned int, float *)'
+###
+
+###
+  - name: SaveIndexForArrayInstead1
+    type: patch
+    addr_pal: 0x8004d4b8
+    data: '1c030001' #Orig: 5460103a -> don't multiply index with 4
+
+  - name: SaveIndexForArrayInstead2
+    type: patch
+    addr_pal: 0x8004d4d4
+    data: '7c040378' #Orig: 7c83002e -> don't load string address with index but save the index
+
+  - name: getSandSubType3
+    type: branch_insn
+    src_addr_pal: 0x8004d4f0
+    branch_type: bl
+    target_func: 'getSandSubType3(unsigned int, unsigned int, unsigned int, unsigned int, unsigned int, unsigned int)'
+###
+
+###
+  - name: getSandSubType4
+    type: branch_insn
+    src_addr_pal: 0x8004d57c
+    branch_type: bl
+    target_func: 'getSandSubType4(unsigned int, char *, unsigned int, unsigned int, unsigned int, unsigned int)'
+###
+
+  - name: Increase_dBgGm_c
+    type: patch
+    addr_pal: 0x80154810
+    data: '38630be8' #Orig: 38630be4 -> increase by 4 byte for new liquidSubType!
+
+  - name: Increase_daBGpolygon_c
+    type: patch
+    addr_pal: 0x807b40b8
+    data: '3863a504' #Orig: 3863a500 -> increase by 4 byte for new ranOnce!
+    
+  - name: NoHardcodedLava1
+    type: nop_insn
+    area_pal: 0x800ECAC0
+
+  - name: NoHardcodedLava2
+    type: nop_insn
+    area_pal: [0x800ECAD0, 0x800ECB04]
+    
+    
+  - name: LavaParticlesColor    #Thanks to it, we can recreate the Night Sky City Particles from NewerDX
+    type: branch_insn
+    branch_type: b
+    src_addr_pal: 0x80888CD4
+    target_func: 'LavaParticlesColor'

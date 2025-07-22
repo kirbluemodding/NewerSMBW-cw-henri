@@ -8,6 +8,10 @@ CREATE_STATE(dWMShop_c, CoinCountdown);
 CREATE_STATE(dWMShop_c, Wait);
 CREATE_STATE(dWMShop_c, HideWait);
 
+SaveBlock *save = GetSaveFile()->GetBlock(-1);
+SaveFile *file = GetSaveFile();
+SaveBlock *block = file->GetBlock(file->header.current_file);
+
 void dWMShop_c::ShopModel_c::setupItem(float x, float y, ItemTypes type) {
 	static const char* Produce[ITEM_TYPE_COUNT][4] = { 
 		{ "I_kinoko", 		"g3d/I_kinoko.brres", 			"I_kinoko", 			"wait2" },
@@ -287,15 +291,22 @@ void dWMShop_c::endState_Hidden() { }
 
 // ShowWait
 void dWMShop_c::beginState_ShowWait() {
-	MapSoundPlayer(SoundRelatedClass, SE_SYS_DIALOGUE_IN, 1);
+	if (block->is_evil == 0) {
+		MapSoundPlayer(SoundRelatedClass, SE_SYS_DIALOGUE_IN, 1);
 
-	layout.disableAllAnimations();
-	layout.enableNonLoopAnim(SHOW_ALL);
-	visible = true;
-	scaleEase = 0.0;
+		layout.disableAllAnimations();
+		layout.enableNonLoopAnim(SHOW_ALL);
+		visible = true;
+		scaleEase = 0.0;
 
-	loadInfo();
-	loadModels();
+		loadInfo();
+		loadModels();
+	}
+	else {
+		MapSoundPlayer(SoundRelatedClass, SE_SYS_INVALID, 1);
+		loadInfo();
+		loadModels();
+	}
 }
 void dWMShop_c::executeState_ShowWait() {
 	if (!layout.isAnimOn(SHOW_ALL)) {
@@ -428,9 +439,9 @@ void dWMShop_c::endState_HideWait() {
 
 const dWMShop_c::ItemTypes dWMShop_c::Inventory[10][12] = { 
 	{ // Henri's Island RICK OP SHOP
-		RICK_SHROOM, FIRE_FLOWER, ICE_FLOWER, PROPELLER,
-		FIRE_FLOWER, ICE_FLOWER, FIRE_FLOWER,
-		MUSHROOM, MUSHROOM, ONE_UP, PROPELLER, PROPELLER
+		RICK_SHROOM, RICK_SHROOM, RICK_SHROOM, RICK_SHROOM,
+		RICK_SHROOM, RICK_SHROOM, RICK_SHROOM,
+		RICK_SHROOM, RICK_SHROOM, RICK_SHROOM, RICK_SHROOM, RICK_SHROOM
 	},
 	{ // Desert
 		MUSHROOM, FIRE_FLOWER, ICE_FLOWER, PROPELLER,
@@ -533,8 +544,6 @@ void dWMShop_c::deleteModels() {
 
 
 void dWMShop_c::loadInfo() {
-	SaveBlock *save = GetSaveFile()->GetBlock(-1);
-
 	leftCol.colourise(save->hudHintH, save->hudHintS, save->hudHintL);
 	midCol.colourise(save->hudHintH, save->hudHintS, save->hudHintL);
 	rightCol.colourise(save->hudHintH, save->hudHintS, save->hudHintL);
@@ -588,9 +597,6 @@ void dWMShop_c::buyItem(int item) {
 
 	MapSoundPlayer(SoundRelatedClass, SE_SYS_DECIDE, 1);
 
-	SaveFile *file = GetSaveFile();
-	SaveBlock *block = file->GetBlock(file->header.current_file);
-
 	coinsRemaining = cost;
 
 	// Work out what we need to apply
@@ -621,6 +627,15 @@ void dWMShop_c::buyItem(int item) {
 		}
 	}
 
+	for (int i = 0; i < 4; i++) {
+		if (Player_Active[i]) {
+			int id = Player_ID[i];
+			Player_Lives[id] -= appliedItems[(int)RICK_SHROOM];
+			if (Player_Lives[id] > 0)
+				Player_Lives[id] = 0;
+		}
+	}
+
 	if (appliedItems[(int)ONE_UP] > 0) {
 		MapSoundPlayer(SoundRelatedClass, SE_SYS_100COIN_ONE_UP, 1);
 	}
@@ -628,9 +643,8 @@ void dWMShop_c::buyItem(int item) {
 	if (appliedItems[(int)RICK_SHROOM] > 0) {
 		// rick op shop's evils
 		MapSoundPlayer(SoundRelatedClass, SE_BOSS_CMN_MAGIC_SHOT, 1);
-		GXColor text = {0, 0, 0, 255};
-		GXColor back = {255, 0, 74, 255};
-		OSFatal(&text, &back, "Get scam. Jaja!");
+		block->is_evil == 1;
+		state.setState(&StateID_HideWait);
 	}
 	
 	state.setState(&StateID_CoinCountdown);

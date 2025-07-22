@@ -547,26 +547,7 @@ void dWMMap_c::renderer_c::loadCamera(Mtx m) {
 
 
 
-void dWMMap_c::doEffects() {
-	int mapID = dScKoopatlas_c::instance->currentMapID;
-
-	// Note: effect::spawn() takes name, unk, pos, rot, scale
-	const S16Vec efRot = {0x1800, 0, 0};
-
-	if (mapID == 1) {
-		// Koopa Core -- DONE
-		// Main area
-		const VEC3 efPos = {2500.0f, -2900.0f, 7000.0f};
-		effects[0].spawn("Wm_cs_firespark", 0, &efPos, &efRot, 0);
-		// Castle area
-		const VEC3 efPos2 = {4500.0f, -3800.0f, 7000.0f};
-		effects[1].spawn("Wm_cs_firespark", 0, &efPos2, &efRot, 0);
-		// Challenge House area
-		const VEC3 efPos3 = {2500.0f, -5500.0f, 7000.0f};
-		effects[2].spawn("Wm_cs_firespark", 0, &efPos2, &efRot, 0);
-	}
-
-}
+void dWMMap_c::doEffects() {} // definitely a better way of "removing" this but whatever lmao
 
 
 void dWMMap_c::spinLaunchStar() {

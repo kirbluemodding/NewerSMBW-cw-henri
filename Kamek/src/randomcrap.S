@@ -1,5 +1,14 @@
 .text
 
+.global fixLightmapsForDolphin
+fixLightmapsForDolphin:
+	li r4, 5
+    stb r4, 0xc(r3)
+    li r4, 1
+    stb r4, 0xd(r3)
+    li r4, 0
+    blr
+
 .global IcicleFix
 IcicleFix:
 	#809B4420

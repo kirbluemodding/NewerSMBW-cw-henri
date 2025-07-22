@@ -101,6 +101,10 @@ void PPCHalt();
 
 void OSReport(const char *format, ...);
 void OSPanic(const char *file, int line, const char *msg, ...);
+
+#include <sdk/gx.h>
+void OSFatal(GXColor *text, GXColor *background, const char *msg);
+
 u64 __OSGetSystemTime();
 
 void OSReturnToDataManager();

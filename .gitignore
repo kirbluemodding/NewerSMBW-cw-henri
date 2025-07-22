@@ -1,11 +1,7 @@
 Kamek/Build
 Kamek/Build_*
 Kamek/processed
-Kamek/AnotherASM
-Kamek/SummerASM
 Kamek/NewerASM
-Kamek/XmasASM
-Kamek/FallingLeafASM
 Kamek/kamek_pal2.x
 Kamek/kamek_ntsc.x
 Kamek/kamek_ntsc2.x
@@ -22,3 +18,4 @@ __pycache__
 .DS_Store
 Bootstrap/BoostrapOutput
 Bootstrap/-v
+Kamek/tmp

@@ -136,9 +136,6 @@ void daWMPlayer_c::startAnimation(int id, float frame, float unk, float updateRa
 	currentUnk = unk;
 	currentUpdateRate = updateRate;
 	this->modelHandler->mdlClass->startAnimation(id, frame, unk, updateRate);
-
-	if (isOldSwimming != isNewSwimming)
-		bindPats();
 }
 
 void daWMPlayer_c::bindPats() {

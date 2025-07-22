@@ -265,7 +265,7 @@ int daCaptainBowser::onCreate() {
 
 	// Prep the goods
 	this->playerCount = GetActivePlayerCount();
-	this->maxDamage = 24;
+	this->maxDamage = 1; // a very healthy boss
 
 	pos.z = 8000.0;
 	this->scale = (Vec){0.57, 0.57, 0.57};

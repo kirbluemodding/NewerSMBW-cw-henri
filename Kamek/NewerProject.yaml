@@ -74,3 +74,6 @@ modules:
 #  - processed/actorlog.yaml
   - processed/exceptionHandler.yaml
   - processed/actors.yaml
+  - processed/checkWater.yaml
+  - processed/liquidsTex.yaml
+  - processed/lavawaves.yaml
