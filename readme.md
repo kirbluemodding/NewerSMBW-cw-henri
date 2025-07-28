@@ -2,27 +2,28 @@
 
 ## Credits
 
-Nintendo - New SUPER MARIO BROS. Wii, misc.
-Newer Team - Newer SUPER MARIO BROS. Wii, misc.
-Ryguy - New SUPER MARIO BROS. Wii... er+, and all of the hacks that have been derived from there
-MandyIGuess - Some code I borrowed from RealismFW, maybe other things I think??
-Asu-chan - Hi
-Realism Studios - Developing this mod of a mod
-Henridderos14 - Spam pinging me on Discord so much that I made this mod out of sheer rage
-  - fun fact: this was only supposed to be a compiled version of the newer map view feature, but the way henri kept spam pinging me inspired  me to "spam" this with AWESOME and HELPFUL features and NEW(er) content...
-0D - Cool person and you should check out [Super Mario Aftermath (definitely the newest trailer btw)](https://www.youtube.com/watch?v=QOSTEy8KGGg) okay thanks
-Krubby - Giving me dementia
-Krubby - Giving me dementia
-Krubby - Giving me dementia
-Krubby - Giving me dementia
-Krubby - Giving me dementia
-Krubby - Giving me dementia
-Krubby - Giving me dementia
-Krubby - Giving me dementia
-Krubby - Giving me dementia
-Krubby - Giving me dementia
-Krubby - Giving me dementia
-Krubby - Giving m
+ - Nintendo - New SUPER MARIO BROS. Wii, misc.
+ - Newer Team - Newer SUPER MARIO BROS. Wii, misc.
+ - Ryguy - New SUPER MARIO BROS. Wii... er+, and all of the hacks that have been derived from there
+ - MandyIGuess - Some code I borrowed from RealismFW, maybe other things I think
+ - Asu-chan - Hi
+ - Realism Studios - Developing this mod of a mod
+ - Henridderos14 - Spam pinging me on Discord so much that I made this mod out of sheer rage
+   * fun fact: this was only supposed to be a compiled version of the newer map view feature, but the way henri kept spam pinging me inspired  me to "spam" this with AWESOME and HELPFUL features and NEW(er) content...
+ - 0D - Cool person and you should check out [Super Mario Aftermath (definitely the newest trailer btw)](https://www.youtube.com/watch?v=QOSTEy8KGGg) okay thanks
+ - Krubby - Giving me dementia
+ - Krubby - Giving me dementia
+ - Krubby - Giving me dementia
+ - Krubby - Giving me dementia
+ - Krubby - Giving me dementia
+ - Krubby - Giving me dementia
+ - Krubby - Giving me dementia
+ - Krubby - Giving me dementia
+ - Krubby - Giving me dementia
+ - Krubby - Giving me dementia
+ - Krubby - Giving me dementia
+ - Krubby - Giving m
+ - Anyone else I forgot - Sorry!!!
 
 ## Source Code Public Release
 
@@ -64,7 +65,7 @@ Copyright (c) 2010-2025 Newer Team
 
 ### Riivolution files / the game itself
 
-![Here's a tutorial from Newer Team's website to help with setting up riivolution mods for **Both Dolphin Emulator and official hardware** (in the tutorial it shows NewerSMBW but it should work with every mod, and definitely this one.)](https://newerteam.com/wii/help/)
+[Here's a tutorial from Newer Team's website to help with setting up riivolution mods for **Both Dolphin Emulator and official hardware** (in the tutorial it shows NewerSMBW but it should work with every mod, and definitely this one.)](https://newerteam.com/wii/help/)
 
 ### Source code
 
@@ -74,7 +75,8 @@ don't use this mod's code lmao, it is a MESS. if you do and something goes horri
 
 ### Bootstrap
 
-i don't even know if newer uses this, but it's probably not very good for anyone's mental health to try and figure that out. if you're gonna recompile the loader stuff, you'd be better off using the Asu-chan (my goat...) thing ported to Codewarrior Kamek from [Synel's MoreSFX](https://github.com/Developers-Collective/NSMBW-Custom-Sprites/releases/tag/MoreSFX).
+i don't even know if newer uses this, but it's probably not very good for anyone's mental health to try and figure that out. if you're gonna recompile the loader stuff, you'd be better off using the Asu-chan (my goat...) thing ported to Codewarrior Kamek from 
+[Synel's MoreSFX](https://github.com/Developers-Collective/NSMBW-Custom-Sprites/releases/tag/MoreSFX).
 
 ### Reggie! patch
 

@@ -698,21 +698,22 @@ void daFuzzyBear_c::executeState_Wait() {
 	this->timer = this->timer + 1;
 
 	if (this->timer > 60) {	
-		//doStateChange(&StateID_Bounce);
+		//doStateChange(&StateID_Bounce); -- BORING
 		
-		if (BigBossFuzzyBear == 1) {
-			int randChoice = GenerateRandomNumber(2);
+		int randChoice = GenerateRandomNumber(3);
 
-			if (randChoice == 1) {
-				doStateChange(&StateID_Spray);
-			}
-			else {
-				doStateChange(&StateID_Needles);
-			}
+		if (randChoice == 1) {
+			doStateChange(&StateID_Spray);
 		}
-		else 					   { doStateChange(&StateID_Bounce); }
-	}	
-} 
+		if (randChoice == 2) {
+			doStateChange(&StateID_Bounce);
+		}
+		else {
+			// doStateChange(&StateID_Needles); // maybe a little too interesting because this kills the fuzzy instantly lmfao
+			doStateChange(&StateID_RolyPoly);
+		}
+	}
+}
 void daFuzzyBear_c::endState_Wait() { }
 
 

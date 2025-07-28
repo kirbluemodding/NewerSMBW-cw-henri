@@ -244,7 +244,6 @@ public:
 	union {
 		u16 credits_hiscore;		// 0x66
 		u16 spentStarCoins;
-		u8 is_evil;
 	};
 	u16 score;					// 0x68
 	u32 completions[10][0x2A];	// 0x6C

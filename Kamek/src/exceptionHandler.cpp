@@ -2,20 +2,6 @@
 #include "fileload.h"
 #include "nsmbwVer.h"
 
-#if defined(ANOTHER_WII)
-#define GAME_NAME "Another v3.2"
-#elif defined(HOLIDAY_SPECIAL)
-#define GAME_NAME "NerXMAS v1.12"
-#elif defined(SUMMER_SUN)
-#define GAME_NAME "SumSun v1.12"
-#elif defined(FALLING_LEAF)
-#define GAME_NAME "Newer FL v1.12"
-#elif defined(NEWER_WII)
-#define GAME_NAME "Newer Wii v1.40"
-#else
-#define GAME_NAME "The game"
-#endif
-
 const bool dsisrFun = false;
 const bool gprFun = false;
 
@@ -124,7 +110,7 @@ char *GetErrorDescription(u16 OSError)
         {
             "SYSTEM RESET",
             "MACHINE CHECK",
-            "DSI", "ISI",
+            "DSi", "ISI",
             "EXTERNAL INTERRUPT",
             "ALIGNMENT",
             "PROGRAM",
@@ -144,7 +130,7 @@ void PrintContext(u16 OSError, void *_osContext, u32 _dsisr, u32 _dar)
 {
     OSContext *osContext = (OSContext *)_osContext;
 	
-    nw4r::db::Exception_Printf_("Whoops! " GAME_NAME " [%s] has crashed - %s\n\nPlease send the information below to\n@kirblue on Discord\nYou can scroll through this report using the D-Pad.\n\n", GetRegionAndVersion(), GetErrorDescription(OSError));
+    nw4r::db::Exception_Printf_("Whoops! Newer Wii v1.40 [%s] has crashed - %s\n\nPlease send the information below to\n@kirblue on Discord\nYou can scroll through this report using the D-Pad.\n\n", GetRegionAndVersion(), GetErrorDescription(OSError));
     nw4r::db::Exception_Printf_("SRR0: %08X | DSISR: %08X | DAR: %08X\n", osContext->srr[0]);
 
     if (gprFun)

@@ -23,7 +23,6 @@ void dWMShop_c::ShopModel_c::setupItem(float x, float y, ItemTypes type) {
 		{ "I_star", 		"g3d/I_star.brres", 			"I_star", 				"wait2" },
 		{ "I_hammer", 		"g3d/I_fireflower.brres",		"I_fireflower",			"wait2" },
 		{ "I_kinoko_bundle","g3d/I_life_kinoko.brres", 		"I_life_kinoko", 		"wait2" },
-		{ "I_kinoko_bundle","g3d/I_rick_kinoko.brres", 		"I_rick_kinoko", 		"wait2" },
 	};
 
 	this->x = x;
@@ -292,22 +291,15 @@ void dWMShop_c::endState_Hidden() { }
 
 // ShowWait
 void dWMShop_c::beginState_ShowWait() {
-	if (block->is_evil == 0) {
-		MapSoundPlayer(SoundRelatedClass, SE_SYS_DIALOGUE_IN, 1);
+	MapSoundPlayer(SoundRelatedClass, SE_SYS_DIALOGUE_IN, 1);
 
-		layout.disableAllAnimations();
-		layout.enableNonLoopAnim(SHOW_ALL);
-		visible = true;
-		scaleEase = 0.0;
+	layout.disableAllAnimations();
+	layout.enableNonLoopAnim(SHOW_ALL);
+	visible = true;
+	scaleEase = 0.0;
 
-		loadInfo();
-		loadModels();
-	}
-	else {
-		MapSoundPlayer(SoundRelatedClass, SE_SYS_INVALID, 1);
-		loadInfo();
-		loadModels();
-	}
+	loadInfo();
+	loadModels();
 }
 void dWMShop_c::executeState_ShowWait() {
 	if (!layout.isAnimOn(SHOW_ALL)) {
@@ -440,9 +432,9 @@ void dWMShop_c::endState_HideWait() {
 
 const dWMShop_c::ItemTypes dWMShop_c::Inventory[10][12] = { 
 	{ // Henri's Island RICK OP SHOP
-		RICK_SHROOM, RICK_SHROOM, RICK_SHROOM, RICK_SHROOM,
-		RICK_SHROOM, RICK_SHROOM, RICK_SHROOM,
-		RICK_SHROOM, RICK_SHROOM, RICK_SHROOM, RICK_SHROOM, RICK_SHROOM
+		HAMMER, HAMMER, HAMMER, HAMMER,
+		HAMMER, HAMMER, HAMMER,
+		HAMMER, HAMMER, HAMMER, HAMMER, HAMMER
 	},
 	{ // Desert
 		MUSHROOM, FIRE_FLOWER, ICE_FLOWER, PROPELLER,
@@ -598,7 +590,7 @@ void dWMShop_c::buyItem(int item) {
 
 	   MapSoundPlayer(SoundRelatedClass, SE_SYS_DECIDE, 1);
 
-	   // Check if buying a Rick Shroom (RICK_SHROOM is 8th in appliedItems)
+	   // Check if buying a Rick Shroom (HAMMER is 7th in appliedItems)
 	   bool isRickShroom = false;
 	   int appliedItems[ITEM_TYPE_COUNT];
 	   for (int i = 0; i < ITEM_TYPE_COUNT; i++)
@@ -608,7 +600,7 @@ void dWMShop_c::buyItem(int item) {
 	   for (int i = 0; i < invCount; i++) {
 			   int t = (int)Inventory[shopKind][invStartIndex+i];
 			   appliedItems[t]++;
-			   if (t == (int)RICK_SHROOM) isRickShroom = true;
+			   if (t == (int)HAMMER) isRickShroom = true;
 	   }
 
 	   // If buying Rick Shroom, set up countdown to zero
@@ -640,7 +632,7 @@ void dWMShop_c::buyItem(int item) {
 	   for (int i = 0; i < 4; i++) {
 			   if (Player_Active[i]) {
 					   int id = Player_ID[i];
-					   Player_Lives[id] -= appliedItems[(int)RICK_SHROOM];
+					   Player_Lives[id] -= appliedItems[(int)HAMMER];
 					   if (Player_Lives[id] > 0)
 							   Player_Lives[id] = 0;
 			   }
@@ -650,7 +642,7 @@ void dWMShop_c::buyItem(int item) {
 			   MapSoundPlayer(SoundRelatedClass, SE_SYS_100COIN_ONE_UP, 1);
 	   }
 
-	   if (appliedItems[(int)RICK_SHROOM] > 0) {
+	   if (appliedItems[(int)HAMMER] > 0) {
 			   // rick op shop's evils
 			   MapSoundPlayer(SoundRelatedClass, STRM_BGM_MINIGAME_FANFARE_BAD, 1);
 	   }

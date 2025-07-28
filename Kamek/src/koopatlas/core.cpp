@@ -430,13 +430,6 @@ int dScKoopatlas_c::onCreate() {
 		isAfter8Castle = true;
 	}
 
-	isEndingScene = (settings & 0x20000000);
-	if (isEndingScene) {
-		currentMapID = 0;
-		save->current_world = 0;
-		save->current_path_node = 0;
-	}
-
 	somethingAboutSound(_8042A788);
 	
 	// Set borders
@@ -577,7 +570,7 @@ void dScKoopatlas_c::executeState_Normal() {
 		CSMENU_ACTIVE(this->csMenu) = true;
 		state.setState(&StateID_CSMenu);
 		hud->hideAll();
-#ifndef NEWER_DEBUG // REMEMBER TO CHANGE WHEN YOU'RE DONE!!!
+#ifdef NEWER_DEBUG
 	 } else if (nowPressed & WPAD_MINUS) {
 		MapSoundPlayer(SoundRelatedClass, SE_SYS_ROUTE_OK, 1);
 	 	pathManager.unlockAllPaths(2);

@@ -461,40 +461,16 @@ ReturnFromTTGMHS:
 
 
 
-.global ThrowHammer # thanks ryguy for helping me reuse lost worlds gold flower code for the lemmy powerup powerpc jujulalafufu
+.global ThrowHammer
 ThrowHammer:
+	lwz r3, 0x1090(r30)
+	cmplwi r3, 7
+	bne ReturnFromThrowHammer
+	
 	mr r3, r30
-	li r4, 2003
+	li r4, 498
 	li r5, 0
 	bl PlayPlayerSound
-	
-	frsp f1, f31
-	lfs f2, 0x20(r1) #0xC0+another_x
-	frsp f0, f30
-	stfs f2, 0x2C(r1) #0xC0+VEC3_x
-	slwi r4, r31, 16
-	addi r5, r1, 0x2C #0xC0+VEC3_x			# pos
-	stfs f1, 0x30(r1) #0xC0+VEC3_y
-
-	li r3, 562								# classID					#old is 0x69
-	li r6, 0								# rot
-	li r7, 0								# layer
-
-	stfs f0, 0x34(r1) #0xC0+VEC3_z
-	lbz r0, 0x1035(r30)
-	lbz r10, 0x38D(r30) #dAcPy_c._._.associatedPlayerID
-	lbz r9, 0x27CC(r30)
-	slwi r0, r0, 12
-	lbz r8, 0x38F(r30)
-	or r0, r4, r0
-	extsb r10, r10
-	slwi r9, r9, 4
-	slwi r4, r8, 8
-	or r8, r10, r9
-	or r0, r4, r0
-
-	or r4, r8, r0							# settings
-	bl CreateActor							# 105 PL_FIREBALL
 	
 ReturnFromThrowHammer:
 	lwz r0, 0xC4(sp)
@@ -507,8 +483,6 @@ ReturnFromThrowHammer:
 	mtlr r0
 	addi sp, sp, 0xC0
 	blr
-
-
 
 .global MoreProjectileStuff_Fix
 MoreProjectileStuff_Fix:
@@ -595,9 +569,8 @@ startOrContinueLoop:
 	cmpwi r3, 0
 	bne loop
 	
-	# now if the current count is >= 2, return 0
-	# otherwise return 1
-	cmpwi r31, 2
+	# always return 1, even if there's a way better way of doing this instead of just comparing any number to 0 lol
+	cmpwi r31, 0
 	bge tooManyHammers
 	
 	li r3, 1
@@ -957,9 +930,9 @@ ToadTextures:
 BrosArcFileName:
 	.string "hammerM"
 
-.global I_hammerArcFilename # repurposed because i'm evil and lazy and whatnot
+.global I_hammerArcFilename
 I_hammerArcFilename:
-	.string "lemmy_ball"
+	.string "I_hammer"
 
 .global I_hammerResFile
 I_hammerResFile:

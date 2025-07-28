@@ -647,11 +647,10 @@ void dCreditsMgr_c::theEnd() {
 	GetTheEnd()->willShow = true;
 }
 void dCreditsMgr_c::exitStage() {
-	SaveBlock *save = GetSaveFile()->GetBlock(-1);
-	bool wasPreviouslyBeat = (save->bitfield & 2) != 0;
-	save->bitfield |= 2;
+    SaveBlock *save = GetSaveFile()->GetBlock(-1);
+    save->bitfield |= 2;
 
-	ExitStage(WORLD_MAP, wasPreviouslyBeat ? 0 : 0x20000000, BEAT_LEVEL, CIRCLE_WIPE);
+    ExitStage(WORLD_MAP, 0, BEAT_LEVEL, CIRCLE_WIPE);
 }
 
 Vec2 dCreditsMgr_c::_vf70() {
