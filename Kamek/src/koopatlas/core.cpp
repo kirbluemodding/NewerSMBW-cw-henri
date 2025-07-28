@@ -563,10 +563,12 @@ void dScKoopatlas_c::executeState_Normal() {
 
 	// Nothing related to the menu is going on
 	if (nowPressed & WPAD_ONE) {
+		MapSoundPlayer(SoundRelatedClass, SE_SYS_DECIDE, 1);
 		stockItem->show = true;
 		state.setState(&StateID_PowerupsWait);
 		hud->hideAll();
 	} else if (nowPressed & WPAD_PLUS) {
+		MapSoundPlayer(SoundRelatedClass, SE_SYS_PAUSE, 1);
 		CSMENU_ACTIVE(this->csMenu) = true;
 		state.setState(&StateID_CSMenu);
 		hud->hideAll();

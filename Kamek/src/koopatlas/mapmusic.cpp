@@ -77,7 +77,7 @@ void dKPMusic::execute() {
 		return;
 
 	if (s_handle.GetSound() == 0) {
-		nw4r::db::Exception_Printf_("SOUND IS NOT PLAYING!\n");
+		// nw4r::db::Exception_Printf_("SOUND IS NOT PLAYING!\n");
 		return;
 	}
 
