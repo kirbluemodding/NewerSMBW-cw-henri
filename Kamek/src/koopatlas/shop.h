@@ -27,7 +27,8 @@ class dWMShop_c : public dActor_c {
 		int selected, lastTopRowChoice;
 		int shopKind;
 
-		int coinsRemaining, timerForCoinCountdown;
+	   int coinsRemaining, timerForCoinCountdown;
+	   bool rickShroomCountdown;
 
 		enum Animation {
 			SHOW_ALL = 0,

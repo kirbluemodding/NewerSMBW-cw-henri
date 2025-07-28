@@ -3,6 +3,16 @@
 # yaml, hasn't it...
 source_files: [../src/randomcrap.S, ../src/music.cpp, ../src/fix38.S, ../src/nullsub.S, ../src/newer.cpp]#, ../src/anmconstruct.S]
 hooks:
+  - name: ChangeCommonNSMBWBossHealth1 # from walid
+    type: patch
+    addr_pal: 0x800987c0
+    data: '3800003C'  #Original: 0x12 => 18 HPs (so 3 hits) - In this case I changed it to 0x3C => 60 HPs (so 10 hits)
+
+  - name: ChangeCommonNSMBWBossHealth2 # from walid
+    type: patch
+    addr_pal: 0x80b1fb40
+    data: '3800003C'  #Same
+
   - name: PermanentFrontFog
     type: patch
     addr_pal: 0x800eb354

@@ -127,6 +127,7 @@ dWMShop_c *dWMShop_c::build() {
 dWMShop_c::dWMShop_c() : state(this, &StateID_Hidden) {
 	layoutLoaded = false;
 	visible = false;
+	rickShroomCountdown = false;
 }
 
 int dWMShop_c::onCreate() {
@@ -585,128 +586,155 @@ void dWMShop_c::buyItem(int item) {
 		{5, 4, 3}, {8, 7, 5}
 	};
 
-	int cost = itemDefs[item][0], cash = getUnspentStarCoinCount();
+	   int cost = itemDefs[item][0], cash = getUnspentStarCoinCount();
 
-	if (cost > cash) {
-		OSReport("Started playing Not Enough\n");
-		lakituModel->playingNotEnough = true;
-		lakituModel->playAnim("notenough", 1.0f, 1);
-		MapSoundPlayer(SoundRelatedClass, SE_SYS_INVALID, 1);
-		return;
-	}
+	   if (cost > cash) {
+			   OSReport("Started playing Not Enough\n");
+			   lakituModel->playingNotEnough = true;
+			   lakituModel->playAnim("notenough", 1.0f, 1);
+			   MapSoundPlayer(SoundRelatedClass, SE_SYS_INVALID, 1);
+			   return;
+	   }
 
-	MapSoundPlayer(SoundRelatedClass, SE_SYS_DECIDE, 1);
+	   MapSoundPlayer(SoundRelatedClass, SE_SYS_DECIDE, 1);
 
-	coinsRemaining = cost;
+	   // Check if buying a Rick Shroom (RICK_SHROOM is 8th in appliedItems)
+	   bool isRickShroom = false;
+	   int appliedItems[ITEM_TYPE_COUNT];
+	   for (int i = 0; i < ITEM_TYPE_COUNT; i++)
+			   appliedItems[i] = 0;
 
-	// Work out what we need to apply
-	int appliedItems[ITEM_TYPE_COUNT];
-	for (int i = 0; i < ITEM_TYPE_COUNT; i++)
-		appliedItems[i] = 0;
+	   int invStartIndex = itemDefs[item][1], invCount = itemDefs[item][2];
+	   for (int i = 0; i < invCount; i++) {
+			   int t = (int)Inventory[shopKind][invStartIndex+i];
+			   appliedItems[t]++;
+			   if (t == (int)RICK_SHROOM) isRickShroom = true;
+	   }
 
-	int invStartIndex = itemDefs[item][1], invCount = itemDefs[item][2];
-	for (int i = 0; i < invCount; i++)
-		appliedItems[(int)Inventory[shopKind][invStartIndex+i]]++;
+	   // If buying Rick Shroom, set up countdown to zero
+	   if (isRickShroom) {
+			   coinsRemaining = getUnspentStarCoinCount();
+	   } else {
+			   coinsRemaining = cost;
+	   }
 
-	for (int i = 0; i < 8; i++) {
-		block->powerups_available[i] += appliedItems[i];
+	   for (int i = 0; i < 8; i++) {
+			   block->powerups_available[i] += appliedItems[i];
 
-		if (block->powerups_available[i] > 99)
-			block->powerups_available[i] = 99;
+			   if (block->powerups_available[i] > 99)
+					   block->powerups_available[i] = 99;
 
-		dScKoopatlas_c::instance->stockItem->newCounts[i] = block->powerups_available[i];
-	}
+			   dScKoopatlas_c::instance->stockItem->newCounts[i] = block->powerups_available[i];
+	   }
 
-	// Apply lives to everyone
-	for (int i = 0; i < 4; i++) {
-		if (Player_Active[i]) {
-			int id = Player_ID[i];
-			Player_Lives[id] -= appliedItems[(int)ONE_UP];
-			if (Player_Lives[id] > 99)
-				Player_Lives[id] = 0;
-		}
-	}
+	   // Apply lives to everyone
+	   for (int i = 0; i < 4; i++) {
+			   if (Player_Active[i]) {
+					   int id = Player_ID[i];
+					   Player_Lives[id] -= appliedItems[(int)ONE_UP];
+					   if (Player_Lives[id] > 99)
+							   Player_Lives[id] = 0;
+			   }
+	   }
 
-	for (int i = 0; i < 4; i++) {
-		if (Player_Active[i]) {
-			int id = Player_ID[i];
-			Player_Lives[id] -= appliedItems[(int)RICK_SHROOM];
-			if (Player_Lives[id] > 0)
-				Player_Lives[id] = 0;
-		}
-	}
+	   for (int i = 0; i < 4; i++) {
+			   if (Player_Active[i]) {
+					   int id = Player_ID[i];
+					   Player_Lives[id] -= appliedItems[(int)RICK_SHROOM];
+					   if (Player_Lives[id] > 0)
+							   Player_Lives[id] = 0;
+			   }
+	   }
 
-	if (appliedItems[(int)ONE_UP] > 0) {
-		MapSoundPlayer(SoundRelatedClass, SE_SYS_100COIN_ONE_UP, 1);
-	}
+	   if (appliedItems[(int)ONE_UP] > 0) {
+			   MapSoundPlayer(SoundRelatedClass, SE_SYS_100COIN_ONE_UP, 1);
+	   }
 
-	if (appliedItems[(int)RICK_SHROOM] > 0) {
-		// rick op shop's evils
-		MapSoundPlayer(SoundRelatedClass, SE_BOSS_CMN_MAGIC_SHOT, 1);
-		block->is_evil == 1;
-		state.setState(&StateID_HideWait);
-	}
-	
-	state.setState(&StateID_CoinCountdown);
-	HideSelectCursor(SelectCursorPointer, 0);
+	   if (appliedItems[(int)RICK_SHROOM] > 0) {
+			   // rick op shop's evils
+			   MapSoundPlayer(SoundRelatedClass, STRM_BGM_MINIGAME_FANFARE_BAD, 1);
+	   }
+
+	   // Store if this is a Rick Shroom purchase for countdown logic
+	   rickShroomCountdown = isRickShroom;
+	   state.setState(&StateID_CoinCountdown);
+	   HideSelectCursor(SelectCursorPointer, 0);
 }
 
 
 void dWMShop_c::beginState_CoinCountdown() {
-	timerForCoinCountdown = 8;
+	   timerForCoinCountdown = 8;
 }
 
 void dWMShop_c::endState_CoinCountdown() { }
 
 void dWMShop_c::executeState_CoinCountdown() {
-	timerForCoinCountdown--;
-	if (timerForCoinCountdown <= 0) {
+	   timerForCoinCountdown--;
+	   if (timerForCoinCountdown <= 0) {
+			   SaveBlock *save = GetSaveFile()->GetBlock(-1);
 
-		SaveBlock *save = GetSaveFile()->GetBlock(-1);
-		save->spentStarCoins++;
+			   // If this is a Rick Shroom purchase, count down to zero
+			   if (rickShroomCountdown) {
+					   if (getUnspentStarCoinCount() > 0) {
+							   save->spentStarCoins++;
+					   }
+			   } else {
+					   save->spentStarCoins++;
+			   }
 
-		// load the coin count
-		int scCount = getUnspentStarCoinCount();
-		WriteNumberToTextBox(&scCount, CoinCount, false);
-		WriteNumberToTextBox(&scCount, CoinCountShadow, false);
+			   // load the coin count
+			   int scCount = getUnspentStarCoinCount();
+			   WriteNumberToTextBox(&scCount, CoinCount, false);
+			   WriteNumberToTextBox(&scCount, CoinCountShadow, false);
 
-		layout.enableNonLoopAnim(COUNT_COIN);
-		VEC3 efPos = {
-			CoinCount->effectiveMtx[0][3],
-			CoinCount->effectiveMtx[1][3],
-			0.0f};
+			   layout.enableNonLoopAnim(COUNT_COIN);
+			   VEC3 efPos = {
+					   CoinCount->effectiveMtx[0][3],
+					   CoinCount->effectiveMtx[1][3],
+					   0.0f};
 
-		// ARGHHHHHHHHHHHHHHHHh.
-		if (IsWideScreen()) {
-			float div = 5.0f;
-			if (scCount < 100)
-				div = 3.6f;
-			if (scCount < 10)
-				div = 2.7f;
-			efPos.x -= (CoinCount->size.x / div);
-			efPos.y -= (CoinCount->size.y / 2.0f);
-		} else {
-			float div = 5.8f;
-			if (scCount < 100)
-				div = 8.2f;
-			if (scCount < 10)
-				div = 14.5f;
-			efPos.x += (CoinCount->size.x / div);
-			efPos.y -= (CoinCount->size.y / 2.8f);
-		}
+			   // ARGHHHHHHHHHHHHHHHHh.
+			   if (IsWideScreen()) {
+					   float div = 5.0f;
+					   if (scCount < 100)
+							   div = 3.6f;
+					   if (scCount < 10)
+							   div = 2.7f;
+					   efPos.x -= (CoinCount->size.x / div);
+					   efPos.y -= (CoinCount->size.y / 2.0f);
+			   } else {
+					   float div = 5.8f;
+					   if (scCount < 100)
+							   div = 8.2f;
+					   if (scCount < 10)
+							   div = 14.5f;
+					   efPos.x += (CoinCount->size.x / div);
+					   efPos.y -= (CoinCount->size.y / 2.8f);
+			   }
 
-		VEC3 efScale = {0.7f, 0.7f, 0.7f};
-		SpawnEffect("Wm_2d_moviecoinvanish", 0, &efPos, 0, &efScale);
+			   VEC3 efScale = {0.7f, 0.7f, 0.7f};
+			   SpawnEffect("Wm_2d_moviecoinvanish", 0, &efPos, 0, &efScale);
 
-		coinsRemaining--;
-		if (coinsRemaining <= 0) {
-			MapSoundPlayer(SoundRelatedClass, SE_PLY_GET_ITEM_AGAIN, 1);
-			state.setState(&StateID_Wait);
-		} else {
-			MapSoundPlayer(SoundRelatedClass, SE_SYS_STAR_COIN_PAY, 1);
-			beginState_CoinCountdown();
-		}
-	}
+			   coinsRemaining--;
+			   bool finished = false;
+			   if (rickShroomCountdown) {
+					   if (getUnspentStarCoinCount() <= 0 || coinsRemaining <= 0) {
+							   finished = true;
+					   }
+			   } else {
+					   if (coinsRemaining <= 0) {
+							   finished = true;
+					   }
+			   }
+			   if (finished) {
+					   MapSoundPlayer(SoundRelatedClass, SE_PLY_GET_ITEM_AGAIN, 1);
+					   rickShroomCountdown = false;
+					   state.setState(&StateID_Wait);
+			   } else {
+					   MapSoundPlayer(SoundRelatedClass, SE_SYS_STAR_COIN_PAY, 1);
+					   beginState_CoinCountdown();
+			   }
+	   }
 }
 
 

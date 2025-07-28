@@ -1,4 +1,6 @@
 SECTIONS {
+	returnFromEggAddNewPowerups = 0x80911790;
+	
 	/* liquidtex */
 	returnFromGetLavaWavesSubType = 0x80075524;
 	returnFromSaveLiquidSettings = 0x807b4d34;

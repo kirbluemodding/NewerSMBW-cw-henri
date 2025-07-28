@@ -461,49 +461,40 @@ ReturnFromTTGMHS:
 
 
 
-.global ThrowHammer
+.global ThrowHammer # thanks ryguy for helping me reuse lost worlds gold flower code for the lemmy powerup powerpc jujulalafufu
 ThrowHammer:
-	# continues on from PlayerProjectileShooting
-	
-	# get powerup
-	lwz r3, 0x1090(r30)
-	cmplwi r3, 7
-	bne ReturnFromThrowHammer
-	
 	mr r3, r30
-	li r4, 498
+	li r4, 2003
 	li r5, 0
 	bl PlayPlayerSound
 	
-	li r3, 0x73			# Hammer
-	li r4, 0				# Settings
-	addi r5, sp, 0x2C		# Position
-	li r6, 0				# Rotation
-	lbz r7, 0x38F(r30)	# Layer
-	bl CreateActor
-	
-	# Store player ID
-	lwz r4, 0(r30)
-	stw r4, 0x450(r3)
-	
-	# store player number, but add 0x100 to differentiate it from 0
-	lbz r4, 0x38D(r30)
-	addi r4, r4, 0x100
-	stw r4, 0x458(r3)
-	
-	# Fix scale
-	lis r4, OneFloat@h
-	ori r4, r4, OneFloat@l
-	lfs f0, 0(r4)
-	stfs f0, 0xDC(r3)
-	stfs f0, 0xE0(r3)
-	stfs f0, 0xE4(r3)
-	
-	mr r4, r30
-	lwz r12, 0x60(r3)
-	lwz r12, 0x8C(r12)
-	mtctr r12
-	bctrl
+	frsp f1, f31
+	lfs f2, 0x20(r1) #0xC0+another_x
+	frsp f0, f30
+	stfs f2, 0x2C(r1) #0xC0+VEC3_x
+	slwi r4, r31, 16
+	addi r5, r1, 0x2C #0xC0+VEC3_x			# pos
+	stfs f1, 0x30(r1) #0xC0+VEC3_y
+
+	li r3, 562								# classID					#old is 0x69
+	li r6, 0								# rot
+	li r7, 0								# layer
+
+	stfs f0, 0x34(r1) #0xC0+VEC3_z
+	lbz r0, 0x1035(r30)
+	lbz r10, 0x38D(r30) #dAcPy_c._._.associatedPlayerID
+	lbz r9, 0x27CC(r30)
+	slwi r0, r0, 12
+	lbz r8, 0x38F(r30)
+	or r0, r4, r0
+	extsb r10, r10
+	slwi r9, r9, 4
+	slwi r4, r8, 8
+	or r8, r10, r9
+	or r0, r4, r0
+
+	or r4, r8, r0							# settings
+	bl CreateActor							# 105 PL_FIREBALL
 	
 ReturnFromThrowHammer:
 	lwz r0, 0xC4(sp)
@@ -966,9 +957,9 @@ ToadTextures:
 BrosArcFileName:
 	.string "hammerM"
 
-.global I_hammerArcFilename
+.global I_hammerArcFilename # repurposed because i'm evil and lazy and whatnot
 I_hammerArcFilename:
-	.string "I_hammer"
+	.string "lemmy_ball"
 
 .global I_hammerResFile
 I_hammerResFile:
@@ -1499,3 +1490,29 @@ SolveMystery: .string "g3d/I_fireflower.brres"
 RewriteHistory: .string "I_fireflower"
 .align 4
 
+# yoshi stuff borrowed from ryguy's nsmbwer+, so thanks i guess
+
+.text
+.align 4
+
+.extern returnFromEggAddNewPowerups
+.global EggAddNewPowerups
+EggAddNewPowerups:
+	mr		r4, r3
+	slwi	r0, r4, 2
+	lis		r3, yoshiEggRewards@h
+	ori		r3, r3, yoshiEggRewards@l
+	b		returnFromEggAddNewPowerups
+
+
+.data
+.align 4
+yoshiEggRewards:
+	.long 0x00000000 #Mushroom			when small
+	.long 0x00000000 #Mushroom			when big
+	.long 0x00000000 #Mushroom			when fire
+	.long 0x00000000 #Mushroom			when mini
+	.long 0x00000000 #Mushroom			when propeller
+	.long 0x00000000 #Mushroom			when penguin
+	.long 0x00000000 #Mushroom			when ice
+	.long 0x00000000 #Mushroom			when hammer because
