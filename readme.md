@@ -50,7 +50,7 @@ getting everything polished and ready.
 
 yeah so this is just newer except i added and changes a few features. thanks for listening to my speech
 
-*-Kirblue, July 21st 2025 (european date formatting sucks)*
+*- Kirblue, July 21st 2025 (european date formatting sucks)*
 
 ### Licensing
 
@@ -70,8 +70,8 @@ Copyright (c) 2010-2025 Newer Team
 ### Source code
 
 don't use this mod's code lmao, it is a MESS. if you do and something goes horribly wrong, i will not be offering any support because:
--i'm kinda trash at coding
--no
+- i'm kinda trash at coding
+- no
 
 ### Bootstrap
 
