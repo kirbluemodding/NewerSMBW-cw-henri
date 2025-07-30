@@ -860,7 +860,7 @@ continueHCGRO:
 .data
 
 PowerupSounds:
-	.long 273, 274, 274, 275, 276, 277, 274, 274
+	.long 273, 274, 274, 275, 276, 277, 274, 1871
 
 
 SomeTable:

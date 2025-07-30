@@ -527,7 +527,7 @@ void dWMPathManager_c::unlockPaths() {
 		dKPNode_s *node = pathLayer->nodes[i];
 		NodeAvailabilityData[i] = node->isUnlocked();
 
-		if (node->type == node->LEVEL && node->isUnlocked() && node->levelNumber[1] != 99) {
+		if (node->type == node->LEVEL && node->isUnlocked() && node->levelNumber[1] != (99 || 41)) {
 			save->completions[node->levelNumber[0]-1][node->levelNumber[1]-1] |= COND_UNLOCKED;
 		}
 	}

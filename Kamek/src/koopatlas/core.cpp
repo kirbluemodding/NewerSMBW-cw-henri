@@ -585,10 +585,18 @@ void dScKoopatlas_c::executeState_Normal() {
 	 			save->SetLevelCondition(w, l, COND_COIN_ALL);
 #endif
 	} else if (nowPressed & WPAD_A) {
-		WMViewerVisible = true;
-		hud->hideAll();
-		MapSoundPlayer(SoundRelatedClass, SE_SYS_MAP_VIEW_MODE, 1);
-		state.setState(&StateID_WMViewerWait);
+		if (currentMapID == 0) {
+			WMViewerVisible = true;
+			hud->hideAll();
+			MapSoundPlayer(SoundRelatedClass, SE_SYS_MAP_VIEW_MODE, 1);
+			state.setState(&StateID_WMViewerWait);
+		}
+		else {
+			MapSoundPlayer(SoundRelatedClass, SE_SYS_ROUTE_NG, 1);
+			pathManager.completionMessagePending = true;
+			pathManager.completionMessageType = CMP_MSG_MAPVIEW_NG;
+		    state.setState(&StateID_CompletionMsg);
+		}
 	}
 	else if (nowPressed & WPAD_B)
 	{
@@ -1162,25 +1170,22 @@ void dScKoopatlas_c::showSaveWindow() {
 	yesNoWindow->visible = true;
 }
 
-static const wchar_t *completionMsgs[] = {
+static const wchar_t *completionMsgs[] = { // more like miscellaneous messages at this point
 	L"The most erudite of Buttocks",
 	L"You've collected all of\nthe \x0B\x014F\xBEEF Star Coins in\n",
-#ifdef FALLING_LEAF
-	L"You've gotten all of the\nexits in Newer Falling Leaf!",
-	L"You've done everything there\nis to do in the game!\nYou're a super player!\nThanks for playing!",
-#else
 	L"You have gotten every \x0B\x013B\xBEEF exit\nin",
 	L"You have gotten everything\nin",
-#endif
 	L"You have collected all the\nnecessary \x0B\x014F\xBEEF coins to enter\nthe Special World!",
 	L"You have collected all the \x0B\x014F\xBEEF Star\nCoins in the game!",
 	L"You've found every \x0B\x013B\xBEEF exit in the\ngame!",
-	L"You've completed everything in\nNEWER SUPER Marioso BROS. Wii!\n\nWe present to you a new quest.\n Just kidding, get scammed lol."
+	L"You've completed everything in\nNEWER SUPER Marioso BROS. Wii!\n\nWe present to you a new quest.\n Just kidding, get scammed lol.",
+	L"Who said you could use the map\nviewer here? You really think\nI'm putting THAT much effort into this?!",
+	L"Hi it's me Rick, Rick OP Shop.\nGet scammed lmao."
 };
 
 void dScKoopatlas_c::beginState_CompletionMsg() {
 	OSReport("CompletionMsg beginning with type %d\n", pathManager.completionMessageType);
-	static const int ynTypes[8] = {
+	static const int ynTypes[10] = {
 		/*NULL*/ -1,
 		/*COINS*/ 14,
 		/*EXITS*/ 7,
@@ -1188,7 +1193,9 @@ void dScKoopatlas_c::beginState_CompletionMsg() {
 		/*COINS EXC W9*/ 9,
 		/*GLOBAL COINS*/ 11,
 		/*GLOBAL EXITS*/ 27,
-		/*EVERYTHING*/ 21
+		/*EVERYTHING*/ 21,
+		/*MAPVIEW NG*/ 2,
+		/*SCAMMED*/ 2
 	};
 	yesNoWindow->type = ynTypes[pathManager.completionMessageType];
 	yesNoWindow->visible = true;

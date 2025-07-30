@@ -88,10 +88,11 @@ bool daFuzzyBear_c::collisionCat1_Fireball_E_Explosion(ActivePhysics *apThis, Ac
 
 	this->timer = 0;
 	PlaySound(this, SE_BOSS_KOOPA_FIRE_DISAPP);
+	PlaySound(this, SE_SYS_INVALID);
 	
 	SpawnEffect("Wm_mr_fireball_hit", 0, &apOther->owner->pos, &(S16Vec){0,0,0}, &(Vec){1.0, 1.0, 1.0});
-	this->damage++;
-	if (this->damage > 14) { doStateChange(&StateID_Outro); }
+	/*this->damage++;
+	if (this->damage > 49) { doStateChange(&StateID_Outro); }*/
 	return true;
 }
 bool daFuzzyBear_c::collisionCat7_GroundPound(ActivePhysics *apThis, ActivePhysics *apOther) { // what in the genuine hell is this bruh
@@ -157,7 +158,7 @@ bool daFuzzyBear_c::collisionCat9_RollingObject(ActivePhysics *apThis, ActivePhy
 	PlaySound(this, SE_EMY_BLOW_PAKKUN_DOWN);
 	SpawnEffect("Wm_mr_kickhit", 0, &blah->pos, &(S16Vec){0,0,0}, &(Vec){1.0, 1.0, 1.0});
 	
-	if (this->damage > 14) { doStateChange(&StateID_Outro); } 
+	if (this->damage > 49) { doStateChange(&StateID_Outro); } 
 	else { doStateChange(&StateID_RolyPoly); }
 	return true;
 }
@@ -177,7 +178,7 @@ bool daFuzzyBear_c::collisionCat13_Hammer(ActivePhysics *apThis, ActivePhysics *
 	
 	SpawnEffect("Wm_mr_kick_glow", 0, &apOther->owner->pos, &(S16Vec){0,0,0}, &(Vec){1.0, 1.0, 1.0});
 	
-	if (this->damage > 14) { doStateChange(&StateID_Outro); } 
+	if (this->damage > 49) { doStateChange(&StateID_Outro); } 
 	else { doStateChange(&StateID_RolyPoly); }
 	return true;
 }
@@ -647,7 +648,7 @@ void daFuzzyBear_c::executeState_RolyPoly() {
 		wallDistance = 50.0;
 	}
 	
-	this->timer += 1;
+	this->timer += 0.5;
 
 	if (this->pos.x <= this->initialPos.x - ((17 * 16.0) + wallDistance))  { // Hit left wall, head right.
 		this->speed.x = -this->speed.x;

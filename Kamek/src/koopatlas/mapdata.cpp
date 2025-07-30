@@ -64,8 +64,13 @@ void dKPNode_s::setupNodeExtra() {
 			colour = "g3d/red.brres";
 	}
 	// the shop
-	else if (level == 99)
+	else if (level == 99) {
 		colour = "g3d/base.brres";
+	}
+
+	else if (level == 41) {
+		colour = "g3d/henri.brres";
+	}
 
 	else if (isUnlocked) {
 		if (hasSecret) {

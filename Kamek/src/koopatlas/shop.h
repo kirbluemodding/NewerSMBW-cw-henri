@@ -18,6 +18,7 @@ class dWMShop_c : public dActor_c {
 		void specialDraw1();
 
 		bool layoutLoaded;
+		bool iHaveBeenScammedOhNo;
 		m2d::EmbedLayout_c layout;
 
 		bool visible;

@@ -1,5 +1,0 @@
----
-output_dir: "BootstrapOutput"
-modules: [bootstrap.yaml]
-code_address: 0x80001800
-

@@ -411,6 +411,14 @@ void dWMShop_c::executeState_HideWait() {
 void dWMShop_c::endState_HideWait() {
 	deleteModels();
 	visible = false;
+	if (iHaveBeenScammedOhNo == 1) {
+		dScKoopatlas_c::instance->hud->unhideAll();
+		dScKoopatlas_c::instance->pathManager.completionMessagePending = true;
+		dScKoopatlas_c::instance->pathManager.completionMessageType = CMP_MSG_SCAMMED;
+		dScKoopatlas_c::instance->state.setState(&dScKoopatlas_c::instance->StateID_CompletionMsg);
+		MapSoundPlayer(SoundRelatedClass, SE_MG_IH_WIN_BR_OPEN, 1);
+		iHaveBeenScammedOhNo = 0;
+	}
 }
 
 
@@ -645,6 +653,7 @@ void dWMShop_c::buyItem(int item) {
 	   if (appliedItems[(int)HAMMER] > 0) {
 			   // rick op shop's evils
 			   MapSoundPlayer(SoundRelatedClass, STRM_BGM_MINIGAME_FANFARE_BAD, 1);
+			   iHaveBeenScammedOhNo = 1;
 	   }
 
 	   // Store if this is a Rick Shroom purchase for countdown logic
@@ -655,7 +664,12 @@ void dWMShop_c::buyItem(int item) {
 
 
 void dWMShop_c::beginState_CoinCountdown() {
-	   timerForCoinCountdown = 8;
+	   if (rickShroomCountdown) {
+	       	timerForCoinCountdown = coinsRemaining * 0.75;
+	   }
+	   else {
+			timerForCoinCountdown = 8;
+	   }
 }
 
 void dWMShop_c::endState_CoinCountdown() { }
@@ -705,8 +719,12 @@ void dWMShop_c::executeState_CoinCountdown() {
 			   }
 
 			   VEC3 efScale = {0.7f, 0.7f, 0.7f};
-			   SpawnEffect("Wm_2d_moviecoinvanish", 0, &efPos, 0, &efScale);
-
+			   if (rickShroomCountdown) {
+			   		SpawnEffect("Wm_en_explosion_hd", 0, &efPos, 0, &efScale);
+			   }
+			   else {
+					SpawnEffect("Wm_2d_moviecoinvanish", 0, &efPos, 0, &efScale);
+			   }
 			   coinsRemaining--;
 			   bool finished = false;
 			   if (rickShroomCountdown) {

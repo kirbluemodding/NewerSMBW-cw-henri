@@ -1,3 +1,0 @@
-Newer Super Mario Brothers Wii 
-VERSION: 1.30
-BUILD DD/MM/YY HH:MM - 16/11/2021 23:20
