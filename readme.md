@@ -15,15 +15,14 @@
  - Krubby - Giving me dementia
  - Krubby - Giving me dementia
  - Krubby - Giving me dementia
- - Krubby - Giving me dementia
- - Krubby - Giving me dementia
- - Krubby - Giving me dementia
- - Krubby - Giving me dementia
- - Krubby - Giving me dementia
- - Krubby - Giving me dementia
- - Krubby - Giving me dementia
  - Krubby - Giving m
  - Anyone else I forgot - Sorry!!!
+
+## Installation (probably what you care about here)
+
+### Riivolution files / the game itself
+
+[Here's a tutorial from Newer Team's website to help with setting up riivolution mods for **Both Dolphin Emulator and official hardware** (in the tutorial it shows NewerSMBW but it should work with every mod, and definitely this one.)](https://newerteam.com/wii/help/)
 
 ## Source Code Public Release
 
@@ -44,11 +43,11 @@ something with this. Much of it isn't really in a usable state - but I'm
 releasing it in case someone else wants to take up development and work on
 getting everything polished and ready.
 
-*-Ninji, 22nd November 2013*
+*- Ninji, 22nd November 2013*
 
 ### My Very Large Preamble
 
-yeah so this is just newer except i added and changes a few features. thanks for listening to my speech
+yeah so this is just newer except i added and changed a few features. thanks for listening to my speech
 
 *- Kirblue, July 21st 2025 (european date formatting sucks)*
 
@@ -61,17 +60,13 @@ Copyright (c) 2010-2025 Newer Team
 
 ## The Kamek information would normally go here, but I fear that that is extremely outdated and not very helpful to most.
 
-## Installation
-
-### Riivolution files / the game itself
-
-[Here's a tutorial from Newer Team's website to help with setting up riivolution mods for **Both Dolphin Emulator and official hardware** (in the tutorial it shows NewerSMBW but it should work with every mod, and definitely this one.)](https://newerteam.com/wii/help/)
-
 ### Source code
 
-don't use this mod's code lmao, it is a MESS. if you do and something goes horribly wrong, i will not be offering any support because:
+don't use this mod's code as a base for your mod lmao, it is a MESS. if you do and something goes horribly wrong, i will not be offering any support because:
 - i'm kinda trash at coding
 - no
+
+HOWEVER, you are totally free to use anything from this mod to add to yours, as long as you **credit either me, realism studios, or whoever had originally made the material that this mod pulled from.**
 
 ### Bootstrap
 
