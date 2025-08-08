@@ -22,8 +22,9 @@
 
 ### Riivolution files / the game itself
 
-[Here's a tutorial from Newer Team's website to help with setting up riivolution mods for **both Dolphin Emulator and official hardware** (in the tutorial it shows NewerSMBW but it should work with every mod, and definitely this one.)](https://newerteam.com/wii/help/)
-[Need any additional help? Feel free to join the Realism Studios Discord](https://discord.gg/7K7TgNcqYN)
+ - [Here's a tutorial from Newer Team's website to help with setting up riivolution mods for **both Dolphin Emulator and official hardware** (in the tutorial it shows NewerSMBW but it should work with every mod, and definitely this one.)](https://newerteam.com/wii/help/)
+
+ - [Need any additional help? Feel free to join the Realism Studios Discord](https://discord.gg/7K7TgNcqYN)
 
 ## Source Code Public Release
 
